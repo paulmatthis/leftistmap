@@ -182,6 +182,10 @@
   function openPreview(e, anchor) {
     if (mqMobile.matches || !e.preview) return;
     clearTimeout(previewHideTimer);
+    // Extinguish the previously highlighted card before lighting the new one,
+    // so connectors never get stranded lit when the pointer moves card->card
+    // (e.g. grazing a neighbour on the way out of the preview box).
+    if (previewId && previewId !== e.id) litConnectors(previewId, false);
     previewId = e.id;
     previewEl.innerHTML = "";
     var p = document.createElement("p");
