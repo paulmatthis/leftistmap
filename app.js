@@ -455,12 +455,11 @@
     svg.innerHTML = paths;
   }
 
-  // Layered genealogy layout. Cards are grouped into horizontal BANDS by birth
-  // year (top = earliest), and within each band positioned near their parents
-  // and children (barycentre) so lineages read as a branching tree, not a list.
-  // Marx and Engels straddle the centre axis; every other band is centred too.
-  // Deterministic, no physics: bounded width (never cut off), even spread, no
-  // overlaps, vertical scroll. Same data in, same arrangement out.
+  // Zigzag row layout. Cards are placed in strict birth-year order, left to
+  // right and top to bottom, in evenly spaced rows sized to the viewport width.
+  // Alternating rows are nudged left/right by a small amount so the connectors
+  // between rows run at an angle rather than stacking into right angles. Bounded
+  // width (never cut off), responsive, deterministic. Same data in, same out.
   function layout() {
     var els = Array.prototype.slice.call(timeline.querySelectorAll(".entry"));
 
@@ -485,100 +484,42 @@
     var idx = {};
     nodes.forEach(function (n) { idx[n.id] = n; });
 
-    // Lineage neighbours.
-    var par = {}, chi = {};
-    nodes.forEach(function (n) { par[n.id] = []; chi[n.id] = []; });
-    nodes.forEach(function (n) {
-      (n.e.parents || []).forEach(function (pid) { if (idx[pid]) { par[n.id].push(pid); chi[pid].push(n.id); } });
-    });
-
     var PADX = 24;
     var maxW = 0; nodes.forEach(function (n) { if (n.w > maxW) maxW = n.w; });
     var usable = Math.max(maxW, contentW - PADX * 2);
     var railX = usable / 2 - maxW / 2;            // furthest a card centre may sit
-    var SP = maxW + 30;                            // ideal centre-to-centre spacing
-    var SP_MIN = maxW + 8;                         // floor that still avoids overlap
+    var SP = maxW + 30;                            // even centre-to-centre spacing
+    var ZIG = Math.round(SP * 0.18);               // subtle per-row left/right nudge
 
-    // Order by birth year and split into evenly sized bands. Band count is set so
-    // a typical band fits the visible width without crowding.
-    var byYear = nodes.slice().sort(function (a, b) {
+    // Birth-year order, read left to right and top to bottom.
+    var seq = nodes.slice().sort(function (a, b) {
       var d = (a.e.yearSort || 0) - (b.e.yearSort || 0);
       return d !== 0 ? d : (a.id < b.id ? -1 : 1);
     });
-    var yrank = {};
-    byYear.forEach(function (n, i) { yrank[n.id] = i; });
-    var perRow = Math.max(3, Math.floor((usable + 30) / SP));
-    var NB = Math.max(4, Math.ceil(nodes.length / perRow));
-    var band = {};
-    nodes.forEach(function (n) { band[n.id] = Math.min(NB - 1, Math.floor(yrank[n.id] / nodes.length * NB)); });
-    // A pinned child shares its partner's band so the pair can sit side by side.
-    nodes.forEach(function (n) { if (n.e.pinNear && idx[n.e.pinNear]) band[n.id] = band[n.e.pinNear]; });
 
-    var bands = [];
-    for (var bi = 0; bi < NB; bi++) bands.push([]);
-    byYear.forEach(function (n) { bands[band[n.id]].push(n); });
+    // As many cards per row as the width allows, leaving room for the zigzag
+    // nudge so a shifted row never clips: (perRow-1)*SP/2 + ZIG <= railX.
+    var perRow = Math.max(3, Math.floor(1 + 2 * (railX - ZIG) / SP));
+    var rows = [];
+    for (var i = 0; i < seq.length; i += perRow) rows.push(seq.slice(i, i + perRow));
 
-    // Per-band spacing: shrink slightly (never below SP_MIN) if a band is full.
-    bands.forEach(function (bl) {
-      bl.sp = bl.length > 1 ? Math.max(SP_MIN, Math.min(SP, (2 * railX) / (bl.length - 1))) : SP;
-    });
-
-    // Seed: lay each band out centred in birth-year order.
-    bands.forEach(function (bl) { bl.forEach(function (n, i) { n.x = (i - (bl.length - 1) / 2) * bl.sp; }); });
-
-    // Relax: repeatedly pull each card toward the average x of its lineage
-    // neighbours, then re-space and re-centre each band. Converges to a tidy tree.
-    for (var iter = 0; iter < 90; iter++) {
-      var des = {};
-      nodes.forEach(function (n) {
-        var nb = par[n.id].concat(chi[n.id]);
-        if (!nb.length) { des[n.id] = n.x; return; }
-        var s = 0; nb.forEach(function (id2) { s += idx[id2].x; });
-        des[n.id] = s / nb.length;
-      });
-      bands.forEach(function (bl) {
-        var sp = bl.sp, half = sp / 2;
-        var c = null; for (var k = 0; k < bl.length; k++) { if (bl[k].e.center) { c = bl[k]; break; } }
-        if (c) {
-          // Anchor band: Marx and Engels straddle the axis; others fan out by
-          // barycentre, balanced left and right so the pair stays centred.
-          var e = null; for (var m = 0; m < bl.length; m++) { if (bl[m].e.pinNear === c.id) { e = bl[m]; break; } }
-          var others = bl.filter(function (n) { return n !== c && n !== e; })
-            .sort(function (a, b) { return (des[a.id] - des[b.id]) || (yrank[a.id] - yrank[b.id]); });
-          c.x = -half; if (e) e.x = half;
-          var nh = Math.ceil(others.length / 2);
-          var left = others.slice(0, nh), right = others.slice(nh);
-          left.reverse().forEach(function (n, i) { n.x = c.x - sp * (i + 1); });
-          right.forEach(function (n, i) { n.x = (e ? e.x : c.x) + sp * (i + 1); });
-        } else {
-          bl.sort(function (a, b) { return (des[a.id] - des[b.id]) || (yrank[a.id] - yrank[b.id]); });
-          bl.forEach(function (n) { n.x = des[n.id]; });
-          for (var i = 1; i < bl.length; i++) if (bl[i].x < bl[i - 1].x + sp) bl[i].x = bl[i - 1].x + sp;
-          for (var j = bl.length - 2; j >= 0; j--) if (bl[j].x > bl[j + 1].x - sp) bl[j].x = bl[j + 1].x - sp;
-          var mid = (bl[0].x + bl[bl.length - 1].x) / 2;
-          bl.forEach(function (n) { n.x -= mid; });
-        }
-        // Keep every card inside the rails.
-        var mx = -Infinity, mn = Infinity;
-        bl.forEach(function (n) { if (n.x > mx) mx = n.x; if (n.x < mn) mn = n.x; });
-        if (mx > railX) bl.forEach(function (n) { n.x -= (mx - railX); });
-        mn = Infinity; bl.forEach(function (n) { if (n.x < mn) mn = n.x; });
-        if (mn < -railX) bl.forEach(function (n) { n.x += (-railX - mn); });
-      });
-    }
-
-    // Stack bands vertically using real card heights; centre each card on its
-    // band's baseline and map the centred x (0 = axis) into the column.
+    // Lay out: every row evenly spaced and centred, then nudged. Even rows shift
+    // left, odd rows shift right, a gentle zigzag so the connectors between rows
+    // run at an angle instead of stacking into right angles. Marx is not forced
+    // to centre; in birth-year order he lands near the middle of the top rows on
+    // common desktop widths, with Engels beside him (unless a row break splits
+    // them, which is fine).
     var PADTOP = 24, VGAP = 64, cx = PADX + usable / 2, y = PADTOP;
-    bands.forEach(function (bl) {
-      if (!bl.length) return;
-      var bandH = 0; bl.forEach(function (n) { if (n.h > bandH) bandH = n.h; });
-      bl.forEach(function (n) {
-        n.el.style.left = (cx + n.x - n.w / 2) + "px";
-        n.el.style.top = (y + (bandH - n.h) / 2) + "px";
+    rows.forEach(function (row, ri) {
+      var shift = (ri % 2 === 0 ? -1 : 1) * ZIG;
+      var rowH = 0; row.forEach(function (n) { if (n.h > rowH) rowH = n.h; });
+      row.forEach(function (n, k) {
+        var x = (k - (row.length - 1) / 2) * SP + shift;
+        n.el.style.left = (cx + x - n.w / 2) + "px";
+        n.el.style.top = (y + (rowH - n.h) / 2) + "px";
         n.el.style.transform = "none";
       });
-      y += bandH + VGAP;
+      y += rowH + VGAP;
     });
     timeline.style.height = (y - VGAP + PADTOP) + "px";
   }
