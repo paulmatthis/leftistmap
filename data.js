@@ -542,7 +542,7 @@ window.ENTRIES = [
     yearSort: 1920,
     era: "The vanguard road",
     lane: -0.9,
-    parents: ["lenin", "luxemburg"],
+    parents: ["lenin", "luxemburg", "zetkin"],
     thumb: "img/kollontai.jpg",
     thumbPos: "center 22%",
     initials: "AK",
@@ -1037,7 +1037,7 @@ window.ENTRIES = [
     yearSort: 2004,
     era: "Race and revolution",
     lane: -1.2,
-    parents: ["marx", "davis", "luxemburg"],
+    parents: ["marx", "davis", "luxemburg", "selma-james"],
     thumb: "img/federici.jpg",
     thumbPos: "center 22%",
     initials: "SF",
@@ -1368,5 +1368,239 @@ window.ENTRIES = [
     initials: "LP",
     preview:
       "American labor organizer and anarcho-communist, widow of Haymarket martyr Albert Parsons and a founder of the IWW. Of Black, Indigenous, and Mexican heritage, she was called by Chicago police 'more dangerous than a thousand rioters.'"
+  },
+  {
+    id: "tristan",
+    orgs: [],
+    quote: "Core idea: the woman is the proletarian of the proletarian himself; there is no emancipation of the workers without the emancipation of women.",
+    archive: { label: "Flora Tristan Reference Archive", url: "" },
+    books: [
+      { title: "The Workers' Union" },
+      { title: "Peregrinations of a Pariah" }
+    ],
+    name: "Flora Tristan",
+    school: "Utopian Socialism · Socialist Feminism",
+    years: "1803–1844",
+    yearSort: 1842,
+    era: "Precursors",
+    parents: ["fourier", "saint-simon"],
+    thumb: "img/tristan.jpg",
+    thumbPos: "center 22%",
+    initials: "FT",
+    preview:
+      "French-Peruvian socialist and feminist who, ahead of Marx, called for an international union of workers and tied the emancipation of labour to the emancipation of women. A foundational figure of socialist feminism."
+  },
+  {
+    id: "zetkin",
+    orgs: ["second-intl", "third-intl"],
+    quote: "The liberation of women, like that of the whole human race, will be the work of the emancipation of labour from capital.",
+    archive: { label: "Clara Zetkin Internet Archive (Marxists.org)", url: "https://www.marxists.org/archive/zetkin/index.htm" },
+    books: [
+      { title: "Selected Writings" },
+      { title: "Fighting Fascism: How to Struggle and How to Win" }
+    ],
+    name: "Clara Zetkin",
+    school: "Marxism · Socialist Feminism",
+    years: "1857–1933",
+    yearSort: 1898,
+    era: "The Second International",
+    parents: ["marx", "engels", "tristan"],
+    thumb: "img/zetkin.jpg",
+    thumbPos: "center 20%",
+    initials: "CZ",
+    preview:
+      "German Marxist and leader of the socialist women's movement who proposed International Women's Day. A founder of the Spartacus League and the German Communist Party, and a sharp early theorist of the fight against fascism."
+  },
+  {
+    id: "pankhurst",
+    orgs: ["third-intl"],
+    quote: "I am going to fight capitalism even if it kills me. It is wrong that people like me should be comfortable when other people are starving.",
+    archive: { label: "Sylvia Pankhurst Archive (Marxists.org)", url: "https://www.marxists.org/archive/pankhurst-sylvia/index.htm" },
+    books: [
+      { title: "The Suffragette Movement" },
+      { title: "Soviet Russia As I Saw It" }
+    ],
+    name: "Sylvia Pankhurst",
+    school: "Council Communism · Socialist Feminism",
+    years: "1882–1960",
+    yearSort: 1919,
+    era: "Revolution and after",
+    parents: ["marx", "luxemburg", "zetkin"],
+    thumb: "img/pankhurst.webp",
+    thumbPos: "center 20%",
+    initials: "SP",
+    preview:
+      "British suffragette who moved from the women's franchise struggle to revolutionary communism and workers' councils, editing the Workers' Dreadnought. Lenin criticised her 'left-wing' communism; she later devoted herself to anti-fascism and Ethiopian independence."
+  },
+  {
+    id: "beauvoir",
+    orgs: [],
+    quote: "One is not born, but rather becomes, a woman.",
+    archive: { label: "Simone de Beauvoir Reference Archive", url: "" },
+    books: [
+      { title: "The Second Sex" },
+      { title: "The Ethics of Ambiguity" }
+    ],
+    name: "Simone de Beauvoir",
+    school: "Existentialist Feminism · Marxism",
+    years: "1908–1986",
+    yearSort: 1948,
+    era: "Existential / New Left",
+    parents: ["marx", "sartre"],
+    thumb: "img/beauvoir.jpg",
+    thumbPos: "center 22%",
+    initials: "SB",
+    preview:
+      "French existentialist philosopher whose The Second Sex (1949) founded modern feminist theory with the argument that woman is made, not born. A lifelong socialist who fused existentialism with a materialist analysis of women's oppression."
+  },
+  {
+    id: "dunayevskaya",
+    orgs: ["fourth-intl"],
+    quote: "Core idea: Marxism is a philosophy of human liberation rooted in Hegel's dialectic, not a theory of economics; freedom is its driving force.",
+    archive: { label: "Raya Dunayevskaya Archive (Marxists.org)", url: "https://www.marxists.org/archive/dunayevskaya/index.htm" },
+    books: [
+      { title: "Marxism and Freedom" },
+      { title: "Philosophy and Revolution" },
+      { title: "Rosa Luxemburg, Women's Liberation, and Marx's Philosophy of Revolution" }
+    ],
+    name: "Raya Dunayevskaya",
+    school: "Marxist Humanism",
+    years: "1910–1987",
+    yearSort: 1945,
+    era: "Heterodox Marxisms",
+    parents: ["trotsky", "clrjames"],
+    thumb: "img/dunayevskaya.jpg",
+    thumbPos: "center 22%",
+    initials: "RD",
+    preview:
+      "Russian-American revolutionary who served as Trotsky's Russian-language secretary, broke with him over the class nature of the USSR, and with C.L.R. James founded the Johnson-Forest Tendency. Founder of Marxist-Humanism in the United States."
+  },
+  {
+    id: "selma-james",
+    orgs: [],
+    quote: "Core idea: the unwaged housework of women is the hidden foundation of capitalist production; 'wages for housework' names that exploitation and demands its end.",
+    archive: { label: "Selma James Reference Archive", url: "" },
+    books: [
+      { title: "The Power of Women and the Subversion of the Community" },
+      { title: "Sex, Race and Class" }
+    ],
+    name: "Selma James",
+    school: "Marxist Feminism · Wages for Housework",
+    years: "b. 1930",
+    yearSort: 1968,
+    era: "Autonomist feminism",
+    parents: ["clrjames", "marx"],
+    thumb: "img/selma-james.jpg",
+    thumbPos: "center 22%",
+    initials: "SJ",
+    preview:
+      "American-British activist and writer who launched the International Wages for Housework Campaign in 1972, arguing that women's unpaid domestic labour underpins all capitalist production. A collaborator of C.L.R. James and a founder of the Global Women's Strike."
+  },
+  {
+    id: "lorde",
+    orgs: [],
+    quote: "The master's tools will never dismantle the master's house.",
+    archive: { label: "Audre Lorde Reference Archive", url: "" },
+    books: [
+      { title: "Sister Outsider" },
+      { title: "Zami: A New Spelling of My Name" }
+    ],
+    name: "Audre Lorde",
+    school: "Black Feminism · Queer Theory",
+    years: "1934–1992",
+    yearSort: 1979,
+    era: "Black radical feminism",
+    parents: ["dubois", "fanon"],
+    thumb: "img/lorde.jpg",
+    thumbPos: "center 22%",
+    initials: "AL",
+    preview:
+      "American poet and theorist who described herself as 'black, lesbian, mother, warrior, poet.' Insisted that there is no single-issue struggle because we do not live single-issue lives, and that difference is a source of power rather than division."
+  },
+  {
+    id: "mies",
+    orgs: [],
+    quote: "Core idea: capitalist accumulation rests on the colonisation of women, nature, and the global South, all treated as free resources to be exploited.",
+    archive: { label: "Maria Mies Reference Archive", url: "" },
+    books: [
+      { title: "Patriarchy and Accumulation on a World Scale" },
+      { title: "Ecofeminism" }
+    ],
+    name: "Maria Mies",
+    school: "Ecofeminism · Marxist Feminism",
+    years: "1931–2023",
+    yearSort: 1986,
+    era: "Ecological & feminist Marxism",
+    parents: ["marx", "luxemburg"],
+    thumb: "wiki:Maria_Mies",
+    thumbPos: "center 22%",
+    initials: "MM",
+    preview:
+      "German sociologist and ecofeminist who argued that capitalism depends on the unpaid 'housewifised' labour of women and the plunder of the colonies and nature. With Vandana Shiva she helped found the ecofeminist current."
+  },
+  {
+    id: "hooks",
+    orgs: [],
+    quote: "Feminism is a movement to end sexism, sexist exploitation, and oppression.",
+    archive: { label: "bell hooks Reference Archive", url: "" },
+    books: [
+      { title: "Ain't I a Woman: Black Women and Feminism" },
+      { title: "Feminism Is for Everybody" },
+      { title: "Where We Stand: Class Matters" }
+    ],
+    name: "bell hooks",
+    school: "Black Feminism · Intersectionality",
+    years: "1952–2021",
+    yearSort: 1990,
+    era: "Intersectional feminism",
+    parents: ["davis", "lorde", "beauvoir"],
+    thumb: "img/hooks.jpg",
+    thumbPos: "center 22%",
+    initials: "bh",
+    preview:
+      "American feminist theorist (born Gloria Jean Watkins) who centred the experience of Black working-class women and insisted that race, class, and gender oppression are interlocking. Wrote accessibly to make feminism a movement for everybody."
+  },
+  {
+    id: "fraser",
+    orgs: [],
+    quote: "Core idea: justice requires both economic redistribution and cultural recognition; a feminism that forgets capitalism becomes its handmaiden.",
+    archive: { label: "Nancy Fraser Reference Archive", url: "" },
+    books: [
+      { title: "Fortunes of Feminism" },
+      { title: "Cannibal Capitalism" }
+    ],
+    name: "Nancy Fraser",
+    school: "Socialist Feminism · Critical Theory",
+    years: "b. 1947",
+    yearSort: 1995,
+    era: "Contemporary critical theory",
+    parents: ["marx", "marcuse"],
+    thumb: "img/fraser.jpg",
+    thumbPos: "center 22%",
+    initials: "NF",
+    preview:
+      "American critical theorist who argues that justice demands both redistribution and recognition, and that mainstream 'lean-in' feminism has been captured by capitalism. A leading voice for a socialist, anti-capitalist feminism."
+  },
+  {
+    id: "zizek",
+    orgs: [],
+    quote: "Core idea: ideology is not a false picture we can simply see through; we keep obeying it even when we know better, because it structures our desire itself.",
+    archive: { label: "Slavoj Žižek Reference Archive", url: "" },
+    books: [
+      { title: "The Sublime Object of Ideology" },
+      { title: "First as Tragedy, Then as Farce" },
+      { title: "Living in the End Times" }
+    ],
+    name: "Slavoj Žižek",
+    school: "Hegelian Marxism · Psychoanalysis",
+    years: "b. 1949",
+    yearSort: 1992,
+    era: "Contemporary",
+    parents: ["marx", "lenin", "althusser"],
+    thumb: "img/zizek.jpg",
+    thumbPos: "center 20%",
+    initials: "SŽ",
+    preview:
+      "Slovenian philosopher who fuses Hegel, Marx, and Lacanian psychoanalysis into a restless critique of ideology and global capitalism. Provocative and prolific, he champions a renewed communism while skewering liberal pieties across left and right."
   }
 ];
