@@ -248,6 +248,10 @@ reintroduce physics or barycenter placement without an explicit ask.
   chips, and an `×` close button. Safe-hover: stays open while the pointer/focus is over the
   card OR the box; hides on a 260ms grace timer. `openPreview` extinguishes the previous
   card's lit connectors before lighting the new one (prevents stranded highlights).
+  Placement is `computePreviewPos(r, pw, ph, vw, vh, gap)` (pure, unit-tested via the
+  `window.__LM_TEST__` seam): it prefers BELOW the card, then ABOVE (the zigzag row gap is
+  the emptiest space), and only falls back to the right/left side when neither fits, always
+  clamped inside the viewport.
 - `litConnectors(id, on)` — toggles the `.lit` class on connector paths touching a card.
 - Modal (`openModal`): header, quote, link buttons, lazy summary, then
   `#modal-connections` (same chips, click closes modal + jumps), then sources footer.

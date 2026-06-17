@@ -204,13 +204,30 @@
     previewEl.hidden = false;
     litConnectors(e.id, true);
     var r = anchor.getBoundingClientRect();
-    var pw = previewEl.offsetWidth, ph = previewEl.offsetHeight;
-    var left = r.right + 14, top = r.top;
-    if (left + pw > window.innerWidth - 12) left = r.left - pw - 14;
-    if (left < 12) left = 12;
-    if (top + ph > window.innerHeight - 12) top = window.innerHeight - ph - 12;
-    previewEl.style.left = left + "px";
-    previewEl.style.top = Math.max(12, top) + "px";
+    var pos = computePreviewPos(r, previewEl.offsetWidth, previewEl.offsetHeight,
+      window.innerWidth, window.innerHeight, 14);
+    previewEl.style.left = pos.left + "px";
+    previewEl.style.top = pos.top + "px";
+  }
+  // Where to put the preview box relative to its card. The box is now large and
+  // sticky, so prefer placing it BELOW the card, then ABOVE, since the gap
+  // between zigzag rows is the emptiest space. Only when neither fits (a tall
+  // card in a short viewport) fall back to the side: right, then left. Always
+  // clamp inside the viewport with a small margin.
+  function computePreviewPos(r, pw, ph, vw, vh, gap) {
+    var M = 12; // viewport margin
+    // For above/below, center horizontally on the card, clamped to the viewport.
+    var hCenter = Math.max(M, Math.min(r.left + r.width / 2 - pw / 2, vw - pw - M));
+    var belowTop = r.bottom + gap;
+    if (belowTop + ph <= vh - M) return { left: hCenter, top: belowTop };
+    var aboveTop = r.top - ph - gap;
+    if (aboveTop >= M) return { left: hCenter, top: aboveTop };
+    // Neither below nor above fits: place to the side.
+    var left = r.right + gap;
+    if (left + pw > vw - M) left = r.left - pw - gap;
+    left = Math.max(M, Math.min(left, vw - pw - M));
+    var top = Math.max(M, Math.min(r.top, vh - ph - M));
+    return { left: left, top: top };
   }
   function hidePreview() {
     clearTimeout(previewHideTimer);
@@ -748,4 +765,8 @@
   layout();
   drawConnectors();
   updateActive();
+
+  // Test seam: expose pure helpers to the headless harness only. No effect in
+  // the browser, where window.__LM_TEST__ is undefined.
+  if (window.__LM_TEST__) window.__LM_TEST__.computePreviewPos = computePreviewPos;
 })();
