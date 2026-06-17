@@ -93,8 +93,11 @@ The goal is an even-handed, complete map, including figures a partisan account w
 - `tools/fetch-images.mjs` — resolves `thumb: "wiki:Page_Title"` to that Wikipedia page's
   lead image, saves `img/<id>.<ext>`, rewrites the path in `data.js`.
 - `tools/fetch-books.mjs` — resolves each book `title` to an ISBN via Open Library and
-  writes it into `data.js`. NOTE: scanning all entries can exceed a 45s sandbox timeout;
-  run it in chunks or on just the new ids.
+  writes it into `data.js`. Resilient: writes after every hit and stops before the 45s
+  sandbox cap, so re-run it until it reports no new resolutions (each pass skips books that
+  already have an isbn). It tries title+author, title, subtitle-stripped, and general
+  queries, and REQUIRES the matched book's `author_name` to contain the entry author's
+  surname (prevents study-guide/commentary mis-hits). Spot-check a few links on bookshop.org.
 - `tools/check-links.mjs` — read-only verifier of archive/source/reading/book links.
 - `tools/repair-links.mjs`, `tools/prune-dead-sources.mjs` — one-off cleanup scripts
   already run; keep for reference.
@@ -275,8 +278,11 @@ committing (this caught real bugs this session):
   leftist-feminist set, and a labor-organizing branch (IWW → CIO → Mazzocchi → McAlevey,
   plus Fred Ross's community-organizing line into McAlevey).
 - All portraits are localized (no `wiki:` thumbs remain).
-- Book ISBNs are mostly unpopulated, so most cards show no Bookshop button. `fetch-books.mjs`
-  timed out on the full run earlier. NEXT: run it in chunks to fill ISBNs.
+- Book ISBNs populated: 143 of 150 books have author-validated ISBNs (Bookshop buttons
+  render). 7 obscure pamphlets/biographies have no standard ISBN and simply show no button
+  (proudhon Philosophy of Poverty, kollontai Sexual Relations and the Class Struggle,
+  saint-simon New Christianity, durruti Durruti in the Spanish Revolution, pankhurst Soviet
+  Russia As I Saw It, the Mazzocchi biography (different author), ross Axioms for Organizers).
 - Features built this session: interactive hover preview with connection chips + close
   button; connection chips in the modal; search jump + the `cardjump` flash; the affiliation
   filter (header + legend, multi-select, animated reflow); the `industrial` org; the zigzag
@@ -286,7 +292,6 @@ committing (this caught real bugs this session):
 
 ## Deferred ideas / next steps
 
-- Fill book ISBNs (`fetch-books.mjs`, chunked) so Bookshop buttons appear.
 - A few entries could still gain academic `reading` links beyond Wikipedia.
 - Possible labor-organizing expansion (Alinsky, Mazzocchi peers) if the branch grows.
 - "Battle" mode (designed, not built): pick two+ thinkers; they rise and face off; the
