@@ -1532,7 +1532,7 @@ window.ENTRIES = [
     yearSort: 1986,
     era: "Ecological & feminist Marxism",
     parents: ["marx", "luxemburg"],
-    thumb: "wiki:Maria_Mies",
+    thumb: "img/mies.png",
     thumbPos: "center 22%",
     initials: "MM",
     preview:
@@ -1602,5 +1602,27 @@ window.ENTRIES = [
     initials: "SŽ",
     preview:
       "Slovenian philosopher who fuses Hegel, Marx, and Lacanian psychoanalysis into a restless critique of ideology and global capitalism. Provocative and prolific, he champions a renewed communism while skewering liberal pieties across left and right."
+  },
+  {
+    id: "mcalevey",
+    orgs: [],
+    quote: "Core idea: there are no shortcuts to power. Unions win only by organising the vast majority of workers themselves, testing their strength, and building toward the supermajority strike.",
+    archive: { label: "Jane McAlevey Reference Archive", url: "" },
+    books: [
+      { title: "No Shortcuts: Organizing for Power in the New Gilded Age" },
+      { title: "A Collective Bargain: Unions, Organizing, and the Fight for Democracy" },
+      { title: "Raising Expectations (and Raising Hell)" }
+    ],
+    name: "Jane McAlevey",
+    school: "Labor Organizing · Rank-and-File Strategy",
+    years: "1964–2024",
+    yearSort: 2016,
+    era: "Contemporary organizing",
+    parents: ["luxemburg", "gramsci"],
+    thumb: "img/mcalevey.jpg",
+    thumbPos: "center 20%",
+    initials: "JM",
+    preview:
+      "American labor organizer and scholar who insisted there are 'no shortcuts' to building worker power: only mass, worker-led organizing and the supermajority strike. Her work revived the rank-and-file tradition for a new generation of unionists."
   }
 ];
