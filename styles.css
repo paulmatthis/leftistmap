@@ -447,8 +447,94 @@ main { overflow-x: auto; }
   font-size: 0.86rem;
   line-height: 1.5;
   box-shadow: var(--shadow);
-  pointer-events: none;
+  pointer-events: auto;   /* interactive: connection tags are clickable */
 }
+.preview .pv-text { margin: 0; }
+
+/* ---------- Connection tags (hover preview + modal) ---------- */
+.conn-block { margin-top: 10px; }
+.conn-label {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.conn-tags { display: flex; flex-wrap: wrap; gap: 5px; max-height: 168px; overflow-y: auto; }
+.conn-tag {
+  font: inherit;
+  font-size: 0.74rem;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.conn-tag:hover,
+.conn-tag:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+.modal__connections { margin-top: 22px; }
+.modal__connections .conn-tags { max-height: none; }
+
+/* ---------- Filter panel + toggles ---------- */
+.filter-panel {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 300px;
+  max-width: 80vw;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+  z-index: 90;
+}
+.filter-panel[hidden] { display: none; }
+.filter-panel__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.filter-panel__title { margin: 0; font-family: ui-serif, Georgia, serif; font-size: 0.95rem; font-weight: 600; }
+.filter-clear {
+  font: inherit; font-size: 0.74rem; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: 7px;
+  padding: 3px 8px; color: var(--text-dim);
+}
+.filter-clear:hover { border-color: var(--accent); color: var(--accent); }
+.filter-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.filter-opt {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  font: inherit; font-size: 0.82rem; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid transparent; border-radius: 8px;
+  padding: 6px 8px; color: var(--text-dim);
+}
+.filter-opt:hover { background: var(--surface-2); }
+.filter-opt.on { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+.icon-btn.is-active { border-color: var(--accent); color: var(--accent); }
+
+/* Tiny per-row filter toggle inside the legend key */
+.legend-list li { justify-content: flex-start; }
+.legend-filter {
+  margin-left: auto; flex: 0 0 auto;
+  width: 24px; height: 24px; display: grid; place-items: center;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--text-dim); cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.legend-filter:hover { border-color: var(--accent); color: var(--accent); }
+.legend-filter.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+/* ---------- Filter reflow animation ---------- */
+.timeline.lm-animate .entry {
+  transition: left 0.45s cubic-bezier(0.4, 0, 0.2, 1), top 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+.entry.filtered-out { opacity: 0; pointer-events: none; }
 
 /* ---------- Modal (article-style margins kept here) ---------- */
 .modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; }

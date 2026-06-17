@@ -31,6 +31,54 @@
     });
   }
 
+  // Adjacency: a card's connections are its parents plus the cards that name it
+  // as a parent (its children). Used by the hover preview and the modal.
+  var childrenMap = {};
+  sorted.forEach(function (e) { childrenMap[e.id] = []; });
+  sorted.forEach(function (e) {
+    (e.parents || []).forEach(function (p) { if (childrenMap[p]) childrenMap[p].push(e.id); });
+  });
+  function connectionsOf(e) {
+    var out = [], seen = {};
+    (e.parents || []).forEach(function (p) { if (byId[p] && !seen[p]) { seen[p] = 1; out.push(p); } });
+    (childrenMap[e.id] || []).forEach(function (c) { if (!seen[c]) { seen[c] = 1; out.push(c); } });
+    return out;
+  }
+  function shortName(e) {
+    var parts = String(e.name || e.id).trim().split(/\s+/);
+    var last = parts[parts.length - 1];
+    if (parts.length > 1 && /^(de|du|van|von|der|della|el|la|le)$/i.test(parts[parts.length - 2])) {
+      last = parts[parts.length - 2] + " " + last;
+    }
+    return last;
+  }
+  // Fill a container with a "Connects to" label and one clickable tag per
+  // connected card. Returns true if any tags were added.
+  function renderConnTags(container, e) {
+    container.innerHTML = "";
+    var ids = connectionsOf(e);
+    if (!ids.length) return false;
+    var label = document.createElement("span");
+    label.className = "conn-label";
+    label.textContent = "Connects to";
+    container.appendChild(label);
+    var wrap = document.createElement("span");
+    wrap.className = "conn-tags";
+    ids.forEach(function (cid) {
+      var t = byId[cid];
+      if (!t) return;
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "conn-tag";
+      b.dataset.id = cid;
+      b.textContent = shortName(t);
+      b.title = t.name;
+      wrap.appendChild(b);
+    });
+    container.appendChild(wrap);
+    return true;
+  }
+
   /* ---------- Render ---------- */
   function fillThumb(el, e) {
     el.textContent = "";
@@ -83,10 +131,10 @@
     }
 
     card.addEventListener("click", function () { openModal(e.id); });
-    card.addEventListener("mouseenter", function (ev) { showPreview(e, ev.currentTarget); litConnectors(e.id, true); });
-    card.addEventListener("mouseleave", function () { hidePreview(); litConnectors(e.id, false); });
-    card.addEventListener("focus", function () { showPreview(e, card); litConnectors(e.id, true); });
-    card.addEventListener("blur", function () { hidePreview(); litConnectors(e.id, false); });
+    card.addEventListener("mouseenter", function (ev) { openPreview(e, ev.currentTarget); });
+    card.addEventListener("mouseleave", scheduleHidePreview);
+    card.addEventListener("focus", function () { openPreview(e, card); });
+    card.addEventListener("blur", scheduleHidePreview);
 
     entry.appendChild(card);
 
@@ -125,21 +173,55 @@
   }
 
   /* ---------- Preview (desktop hover / keyboard focus) ---------- */
-  function showPreview(e, anchor) {
+  // The preview is interactive (it holds clickable connection tags), so it uses
+  // a small grace delay: it stays open while the pointer or focus is over the
+  // card OR the preview itself, and only hides shortly after leaving both.
+  var previewId = null;
+  var previewHideTimer = null;
+
+  function openPreview(e, anchor) {
     if (mqMobile.matches || !e.preview) return;
-    previewEl.textContent = e.preview;
+    clearTimeout(previewHideTimer);
+    previewId = e.id;
+    previewEl.innerHTML = "";
+    var p = document.createElement("p");
+    p.className = "pv-text";
+    p.textContent = e.preview;
+    previewEl.appendChild(p);
+    var cc = document.createElement("div");
+    cc.className = "conn-block";
+    if (renderConnTags(cc, e)) previewEl.appendChild(cc);
     previewEl.hidden = false;
+    litConnectors(e.id, true);
     var r = anchor.getBoundingClientRect();
-    var pw = previewEl.offsetWidth;
-    var ph = previewEl.offsetHeight;
-    var left = r.right + 14;
-    var top = r.top;
-    if (left + pw > window.innerWidth - 12) { left = Math.max(12, r.left); top = r.bottom + 10; }
+    var pw = previewEl.offsetWidth, ph = previewEl.offsetHeight;
+    var left = r.right + 14, top = r.top;
+    if (left + pw > window.innerWidth - 12) left = r.left - pw - 14;
+    if (left < 12) left = 12;
     if (top + ph > window.innerHeight - 12) top = window.innerHeight - ph - 12;
     previewEl.style.left = left + "px";
     previewEl.style.top = Math.max(12, top) + "px";
   }
-  function hidePreview() { previewEl.hidden = true; }
+  function hidePreview() {
+    clearTimeout(previewHideTimer);
+    previewEl.hidden = true;
+    if (previewId) litConnectors(previewId, false);
+    previewId = null;
+  }
+  function scheduleHidePreview() {
+    clearTimeout(previewHideTimer);
+    previewHideTimer = setTimeout(hidePreview, 260);
+  }
+  previewEl.addEventListener("mouseenter", function () { clearTimeout(previewHideTimer); });
+  previewEl.addEventListener("mouseleave", scheduleHidePreview);
+  previewEl.addEventListener("focusin", function () { clearTimeout(previewHideTimer); });
+  previewEl.addEventListener("focusout", scheduleHidePreview);
+  previewEl.addEventListener("click", function (ev) {
+    var t = ev.target.closest(".conn-tag");
+    if (!t) return;
+    hidePreview();
+    jumpToCard(t.dataset.id);
+  });
 
   // Light up every connector touching a card, so its relations stand out.
   function litConnectors(id, on) {
@@ -221,6 +303,7 @@
     var q = document.getElementById("modal-quote");
     if (e.quote) { q.textContent = e.quote; q.hidden = false; } else { q.hidden = true; }
     renderLinks(e);
+    renderConnTags(document.getElementById("modal-connections"), e);
 
     var body = document.getElementById("modal-summary");
     var src = document.getElementById("modal-sources");
@@ -253,6 +336,13 @@
   modal.addEventListener("click", function (ev) {
     if (ev.target.hasAttribute("data-close")) closeModal();
   });
+  // A connection tag in the modal closes it and jumps to that card.
+  document.getElementById("modal-connections").addEventListener("click", function (ev) {
+    var t = ev.target.closest(".conn-tag");
+    if (!t) return;
+    closeModal();
+    jumpToCard(t.dataset.id);
+  });
   document.addEventListener("keydown", function (ev) {
     if (ev.key !== "Escape") return;
     if (!modal.hidden) closeModal();
@@ -263,6 +353,10 @@
     else if (!document.getElementById("search-panel").hidden) {
       document.getElementById("search-panel").hidden = true;
       document.getElementById("search-toggle").setAttribute("aria-expanded", "false");
+    }
+    else if (!document.getElementById("filter-panel").hidden) {
+      document.getElementById("filter-panel").hidden = true;
+      document.getElementById("filter-toggle").setAttribute("aria-expanded", "false");
     }
   });
 
@@ -358,6 +452,15 @@
       var span = document.createElement("span");
       span.textContent = window.ORGS[id].label;
       li.appendChild(span);
+      var fb = document.createElement("button");
+      fb.type = "button";
+      fb.className = "legend-filter";
+      fb.dataset.filter = id;
+      fb.title = "Filter by " + window.ORGS[id].label;
+      fb.setAttribute("aria-pressed", "false");
+      fb.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 5 21 5 14 13 14 19 10 21 10 13"></polygon></svg>';
+      fb.addEventListener("click", function (ev) { ev.stopPropagation(); toggleFilter(id); });
+      li.appendChild(fb);
       list.appendChild(li);
     });
   })();
@@ -373,6 +476,85 @@
   document.addEventListener("click", function (ev) {
     if (!legendPanel.hidden && !legendPanel.contains(ev.target) && !legendToggle.contains(ev.target)) {
       closeLegend();
+    }
+  });
+
+  /* ---------- Filter by affiliation ---------- */
+  var activeFilters = {};                 // org id -> true
+  var animOffTimer = null;
+  var filterToggle = document.getElementById("filter-toggle");
+  var filterPanel = document.getElementById("filter-panel");
+
+  function passesFilter(e) {
+    var keys = Object.keys(activeFilters);
+    if (!keys.length) return true;        // nothing selected = show all
+    return (e.orgs || []).some(function (o) { return activeFilters[o]; });
+  }
+  function syncFilterUI() {
+    var any = Object.keys(activeFilters).length > 0;
+    if (filterToggle) filterToggle.classList.toggle("is-active", any);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-filter]"), function (el) {
+      var on = !!activeFilters[el.dataset.filter];
+      el.classList.toggle("on", on);
+      el.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  function applyFilter() {
+    sorted.forEach(function (e) {
+      var el = timeline.querySelector('.entry[data-id="' + e.id + '"]');
+      if (el) el.classList.toggle("filtered-out", !passesFilter(e));
+    });
+    syncFilterUI();
+    timeline.classList.add("lm-animate");   // animate the reflow only for filtering
+    layout();
+    reflowConnectors();
+    updateActive();
+    clearTimeout(animOffTimer);
+    animOffTimer = setTimeout(function () { timeline.classList.remove("lm-animate"); }, 580);
+  }
+  function toggleFilter(id) {
+    if (activeFilters[id]) delete activeFilters[id]; else activeFilters[id] = true;
+    applyFilter();
+  }
+  function clearFilters() { activeFilters = {}; applyFilter(); }
+
+  (function buildFilterPanel() {
+    var list = document.getElementById("filter-list");
+    if (!list || !window.ORGS) return;
+    Object.keys(window.ORGS).forEach(function (id) {
+      var li = document.createElement("li");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "filter-opt";
+      btn.dataset.filter = id;
+      btn.setAttribute("aria-pressed", "false");
+      var b = orgBadge(id);
+      if (b) btn.appendChild(b);
+      var span = document.createElement("span");
+      span.textContent = window.ORGS[id].label;
+      btn.appendChild(span);
+      btn.addEventListener("click", function () { toggleFilter(id); });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  })();
+
+  var filterClear = document.getElementById("filter-clear");
+  if (filterClear) filterClear.addEventListener("click", clearFilters);
+  function closeFilter() {
+    if (!filterPanel) return;
+    filterPanel.hidden = true;
+    filterToggle.setAttribute("aria-expanded", "false");
+  }
+  if (filterToggle) filterToggle.addEventListener("click", function () {
+    var willOpen = filterPanel.hidden;
+    filterPanel.hidden = !willOpen;
+    filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
+  document.addEventListener("click", function (ev) {
+    if (filterPanel && !filterPanel.hidden &&
+        !filterPanel.contains(ev.target) && !filterToggle.contains(ev.target)) {
+      closeFilter();
     }
   });
 
@@ -434,8 +616,13 @@
     var paths = "";
     sorted.forEach(function (e) {
       (e.parents || []).forEach(function (pid) {
-        var childEl = timeline.querySelector('.entry[data-id="' + e.id + '"] .card');
-        var parentEl = timeline.querySelector('.entry[data-id="' + pid + '"] .card');
+        var childEntry = timeline.querySelector('.entry[data-id="' + e.id + '"]');
+        var parentEntry = timeline.querySelector('.entry[data-id="' + pid + '"]');
+        if (!childEntry || !parentEntry) return;
+        // Skip connectors touching a filtered-out (hidden) card.
+        if (childEntry.classList.contains("filtered-out") || parentEntry.classList.contains("filtered-out")) return;
+        var childEl = childEntry.querySelector(".card");
+        var parentEl = parentEntry.querySelector(".card");
         if (!childEl || !parentEl) return;
         var cr = childEl.getBoundingClientRect(), pr = parentEl.getBoundingClientRect();
         // Center-to-center: the line hides behind the opaque cards and only
@@ -456,13 +643,25 @@
     svg.innerHTML = paths;
   }
 
+  // Redraw connectors every frame for a short window so the curves track the
+  // cards while they slide to new positions during a filter reflow.
+  var reflowToken = 0;
+  function reflowConnectors(dur) {
+    var id = ++reflowToken, start = performance.now();
+    (function step(now) {
+      if (id !== reflowToken) return;
+      drawConnectors();
+      if (now - start < (dur || 580)) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
   // Zigzag row layout. Cards are placed in strict birth-year order, left to
   // right and top to bottom, in evenly spaced rows sized to the viewport width.
   // Alternating rows are nudged left/right by a small amount so the connectors
   // between rows run at an angle rather than stacking into right angles. Bounded
   // width (never cut off), responsive, deterministic. Same data in, same out.
   function layout() {
-    var els = Array.prototype.slice.call(timeline.querySelectorAll(".entry"));
+    var els = Array.prototype.slice.call(timeline.querySelectorAll(".entry:not(.filtered-out)"));
 
     // Mobile stacks in normal document flow; clear any desktop inline position.
     if (mqMobile.matches) {
