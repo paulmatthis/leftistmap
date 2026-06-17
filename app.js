@@ -485,6 +485,13 @@
     var idx = {};
     nodes.forEach(function (n) { idx[n.id] = n; });
 
+    // Lineage neighbours.
+    var par = {}, chi = {};
+    nodes.forEach(function (n) { par[n.id] = []; chi[n.id] = []; });
+    nodes.forEach(function (n) {
+      (n.e.parents || []).forEach(function (pid) { if (idx[pid]) { par[n.id].push(pid); chi[pid].push(n.id); } });
+    });
+
     var PADX = 24;
     var maxW = 0; nodes.forEach(function (n) { if (n.w > maxW) maxW = n.w; });
     var usable = Math.max(maxW, contentW - PADX * 2);
@@ -492,69 +499,86 @@
     var SP = maxW + 30;                            // ideal centre-to-centre spacing
     var SP_MIN = maxW + 8;                         // floor that still avoids overlap
 
-    // Birth-year order. Pinned children are pulled to sit right after their
-    // partner so the pair shares a row, side by side.
+    // Order by birth year and split into evenly sized bands. Band count is set so
+    // a typical band fits the visible width without crowding.
     var byYear = nodes.slice().sort(function (a, b) {
       var d = (a.e.yearSort || 0) - (b.e.yearSort || 0);
       return d !== 0 ? d : (a.id < b.id ? -1 : 1);
     });
-    var pinParent = {};
-    byYear.forEach(function (n) { if (n.e.pinNear && idx[n.e.pinNear]) pinParent[n.id] = n.e.pinNear; });
-    var seq = byYear.filter(function (n) { return !pinParent[n.id]; });
-    byYear.forEach(function (n) {
-      if (!pinParent[n.id]) return;
-      var at = -1;
-      for (var k = 0; k < seq.length; k++) { if (seq[k].id === pinParent[n.id]) { at = k; break; } }
-      if (at >= 0) seq.splice(at + 1, 0, n); else seq.push(n);
+    var yrank = {};
+    byYear.forEach(function (n, i) { yrank[n.id] = i; });
+    var perRow = Math.max(3, Math.floor((usable + 30) / SP));
+    var NB = Math.max(4, Math.ceil(nodes.length / perRow));
+    var band = {};
+    nodes.forEach(function (n) { band[n.id] = Math.min(NB - 1, Math.floor(yrank[n.id] / nodes.length * NB)); });
+    // A pinned child shares its partner's band so the pair can sit side by side.
+    nodes.forEach(function (n) { if (n.e.pinNear && idx[n.e.pinNear]) band[n.id] = band[n.e.pinNear]; });
+
+    var bands = [];
+    for (var bi = 0; bi < NB; bi++) bands.push([]);
+    byYear.forEach(function (n) { bands[band[n.id]].push(n); });
+
+    // Per-band spacing: shrink slightly (never below SP_MIN) if a band is full.
+    bands.forEach(function (bl) {
+      bl.sp = bl.length > 1 ? Math.max(SP_MIN, Math.min(SP, (2 * railX) / (bl.length - 1))) : SP;
     });
 
-    // Fixed, consistent number of cards per row, sliced from the birth-year
-    // sequence. A pinned pair is never split across a row boundary.
-    var perRow = Math.max(3, Math.floor((usable + 30) / SP));
-    var rows = [];
-    for (var s = 0; s < seq.length; ) {
-      var end = Math.min(s + perRow, seq.length);
-      if (end < seq.length && pinParent[seq[end].id] === seq[end - 1].id) end--;
-      rows.push(seq.slice(s, end));
-      s = end;
+    // Seed: lay each band out centred in birth-year order.
+    bands.forEach(function (bl) { bl.forEach(function (n, i) { n.x = (i - (bl.length - 1) / 2) * bl.sp; }); });
+
+    // Relax: repeatedly pull each card toward the average x of its lineage
+    // neighbours, then re-space and re-centre each band. Converges to a tidy tree.
+    for (var iter = 0; iter < 90; iter++) {
+      var des = {};
+      nodes.forEach(function (n) {
+        var nb = par[n.id].concat(chi[n.id]);
+        if (!nb.length) { des[n.id] = n.x; return; }
+        var s = 0; nb.forEach(function (id2) { s += idx[id2].x; });
+        des[n.id] = s / nb.length;
+      });
+      bands.forEach(function (bl) {
+        var sp = bl.sp, half = sp / 2;
+        var c = null; for (var k = 0; k < bl.length; k++) { if (bl[k].e.center) { c = bl[k]; break; } }
+        if (c) {
+          // Anchor band: Marx and Engels straddle the axis; others fan out by
+          // barycentre, balanced left and right so the pair stays centred.
+          var e = null; for (var m = 0; m < bl.length; m++) { if (bl[m].e.pinNear === c.id) { e = bl[m]; break; } }
+          var others = bl.filter(function (n) { return n !== c && n !== e; })
+            .sort(function (a, b) { return (des[a.id] - des[b.id]) || (yrank[a.id] - yrank[b.id]); });
+          c.x = -half; if (e) e.x = half;
+          var nh = Math.ceil(others.length / 2);
+          var left = others.slice(0, nh), right = others.slice(nh);
+          left.reverse().forEach(function (n, i) { n.x = c.x - sp * (i + 1); });
+          right.forEach(function (n, i) { n.x = (e ? e.x : c.x) + sp * (i + 1); });
+        } else {
+          bl.sort(function (a, b) { return (des[a.id] - des[b.id]) || (yrank[a.id] - yrank[b.id]); });
+          bl.forEach(function (n) { n.x = des[n.id]; });
+          for (var i = 1; i < bl.length; i++) if (bl[i].x < bl[i - 1].x + sp) bl[i].x = bl[i - 1].x + sp;
+          for (var j = bl.length - 2; j >= 0; j--) if (bl[j].x > bl[j + 1].x - sp) bl[j].x = bl[j + 1].x - sp;
+          var mid = (bl[0].x + bl[bl.length - 1].x) / 2;
+          bl.forEach(function (n) { n.x -= mid; });
+        }
+        // Keep every card inside the rails.
+        var mx = -Infinity, mn = Infinity;
+        bl.forEach(function (n) { if (n.x > mx) mx = n.x; if (n.x < mn) mn = n.x; });
+        if (mx > railX) bl.forEach(function (n) { n.x -= (mx - railX); });
+        mn = Infinity; bl.forEach(function (n) { if (n.x < mn) mn = n.x; });
+        if (mn < -railX) bl.forEach(function (n) { n.x += (-railX - mn); });
+      });
     }
 
-    // Position each row: even spacing, centred on the axis. The row holding the
-    // anchor (Marx) seats him dead-centre with his pinned partner to his right
-    // and the rest split left and right in birth-year order.
-    rows.forEach(function (row) {
-      var rsp = row.length > 1 ? Math.max(SP_MIN, Math.min(SP, (2 * railX) / (row.length - 1))) : SP;
-      var c = null; for (var k = 0; k < row.length; k++) { if (row[k].e.center) { c = row[k]; break; } }
-      if (c) {
-        var e = null; for (var m = 0; m < row.length; m++) { if (row[m].e.pinNear === c.id) { e = row[m]; break; } }
-        var others = row.filter(function (n) { return n !== c && n !== e; });
-        c.x = -rsp / 2; if (e) e.x = rsp / 2;
-        var nh = Math.ceil(others.length / 2);
-        var left = others.slice(0, nh), right = others.slice(nh);
-        left.reverse().forEach(function (n, i) { n.x = c.x - rsp * (i + 1); });
-        right.forEach(function (n, i) { n.x = (e ? e.x : c.x) + rsp * (i + 1); });
-      } else {
-        row.forEach(function (n, i) { n.x = (i - (row.length - 1) / 2) * rsp; });
-      }
-      // Keep the row inside the rails.
-      var mx = -Infinity, mn = Infinity;
-      row.forEach(function (n) { if (n.x > mx) mx = n.x; if (n.x < mn) mn = n.x; });
-      if (mx > railX) row.forEach(function (n) { n.x -= (mx - railX); });
-      mn = Infinity; row.forEach(function (n) { if (n.x < mn) mn = n.x; });
-      if (mn < -railX) row.forEach(function (n) { n.x += (-railX - mn); });
-    });
-
-    // Stack rows vertically using real card heights; map the centred x into the column.
+    // Stack bands vertically using real card heights; centre each card on its
+    // band's baseline and map the centred x (0 = axis) into the column.
     var PADTOP = 24, VGAP = 64, cx = PADX + usable / 2, y = PADTOP;
-    rows.forEach(function (row) {
-      if (!row.length) return;
-      var rowH = 0; row.forEach(function (n) { if (n.h > rowH) rowH = n.h; });
-      row.forEach(function (n) {
+    bands.forEach(function (bl) {
+      if (!bl.length) return;
+      var bandH = 0; bl.forEach(function (n) { if (n.h > bandH) bandH = n.h; });
+      bl.forEach(function (n) {
         n.el.style.left = (cx + n.x - n.w / 2) + "px";
-        n.el.style.top = (y + (rowH - n.h) / 2) + "px";
+        n.el.style.top = (y + (bandH - n.h) / 2) + "px";
         n.el.style.transform = "none";
       });
-      y += rowH + VGAP;
+      y += bandH + VGAP;
     });
     timeline.style.height = (y - VGAP + PADTOP) + "px";
   }
