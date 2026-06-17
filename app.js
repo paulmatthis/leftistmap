@@ -200,7 +200,8 @@
     el.classList.remove("flash");
     void el.offsetWidth; // restart the highlight animation
     el.classList.add("flash");
-    setTimeout(function () { el.classList.remove("flash"); }, 1300);
+    litConnectors(id, true); // light its lineage like a hover
+    setTimeout(function () { el.classList.remove("flash"); litConnectors(id, false); }, 1500);
   }
 
   /* ---------- Modal ---------- */
