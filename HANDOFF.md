@@ -248,6 +248,11 @@ reintroduce physics or barycenter placement without an explicit ask.
   chips, and an `×` close button. Safe-hover: stays open while the pointer/focus is over the
   card OR the box; hides on a 260ms grace timer. `openPreview` extinguishes the previous
   card's lit connectors before lighting the new one (prevents stranded highlights).
+  Hover-intent: the MOUSE path goes through `requestPreview`, which waits
+  `PREVIEW_SHOW_DELAY` (280ms) of linger before opening, so sweeping the pointer across
+  cards never makes the box pop; a card-leave (`cancelPreviewShow`) cancels a pending open.
+  This gates only the appear step, the hide/grace logic is unaffected. Keyboard `focus`
+  still calls `openPreview` directly (immediate, no linger) for accessibility.
   Placement is `computePreviewPos(r, pw, ph, vw, vh, gap)` (pure, unit-tested via the
   `window.__LM_TEST__` seam): it prefers BELOW the card, then ABOVE (the zigzag row gap is
   the emptiest space), and only falls back to the right/left side when neither fits, always

@@ -131,8 +131,8 @@
     }
 
     card.addEventListener("click", function () { openModal(e.id); });
-    card.addEventListener("mouseenter", function (ev) { openPreview(e, ev.currentTarget); });
-    card.addEventListener("mouseleave", scheduleHidePreview);
+    card.addEventListener("mouseenter", function (ev) { requestPreview(e, ev.currentTarget); });
+    card.addEventListener("mouseleave", function () { cancelPreviewShow(); scheduleHidePreview(); });
     card.addEventListener("focus", function () { openPreview(e, card); });
     card.addEventListener("blur", scheduleHidePreview);
 
@@ -178,10 +178,26 @@
   // card OR the preview itself, and only hides shortly after leaving both.
   var previewId = null;
   var previewHideTimer = null;
+  var previewShowTimer = null;
+  var PREVIEW_SHOW_DELAY = 280; // hover-intent: linger this long before the box appears
+
+  // Mouse path only: wait out a short linger before showing the box, so sweeping
+  // the pointer across many cards never makes it pop. A new card or a card-leave
+  // cancels a still-pending request. This gates ONLY the appear step; once the
+  // box is open the hide logic below is in sole control and is untouched by this.
+  function requestPreview(e, anchor) {
+    if (mqMobile.matches || !e.preview) return;
+    clearTimeout(previewShowTimer);
+    // Already showing this card (e.g. re-enter from its own preview box): no wait.
+    if (previewId === e.id && !previewEl.hidden) { openPreview(e, anchor); return; }
+    previewShowTimer = setTimeout(function () { openPreview(e, anchor); }, PREVIEW_SHOW_DELAY);
+  }
+  function cancelPreviewShow() { clearTimeout(previewShowTimer); }
 
   function openPreview(e, anchor) {
     if (mqMobile.matches || !e.preview) return;
     clearTimeout(previewHideTimer);
+    clearTimeout(previewShowTimer);
     // Extinguish the previously highlighted card before lighting the new one,
     // so connectors never get stranded lit when the pointer moves card->card
     // (e.g. grazing a neighbour on the way out of the preview box).
