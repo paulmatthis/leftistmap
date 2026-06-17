@@ -1639,7 +1639,7 @@ window.ENTRIES = [
     years: "1926–2002",
     yearSort: 1975,
     era: "Postwar labor militancy",
-    parents: ["luxemburg", "gramsci"],
+    parents: ["luxemburg", "gramsci", "connolly"],
     thumb: "img/mazzocchi.webp",
     thumbPos: "center 20%",
     initials: "TM",
