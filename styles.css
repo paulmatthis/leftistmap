@@ -618,6 +618,8 @@ main { overflow-x: auto; }
   color: var(--text-dim);
   margin-bottom: 1px;
 }
+.modal__sources .src-label:not(:first-child) { margin-top: 10px; }
+.modal__sources .src-on { color: var(--accent); font-weight: 600; margin-right: 3px; }
 
 /* ---------- Footer ---------- */
 .site-footer {

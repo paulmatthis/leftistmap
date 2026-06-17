@@ -65,6 +65,7 @@ for (const e of entries) {
   const c = win.LM_CONTENT[e.id] || {};
   for (const s of (c.sources || [])) items.push({ id: e.id, field: "source", url: s.url });
   for (const r of (c.reading || [])) items.push({ id: e.id, field: "reading", url: r.url });
+  for (const x of (c.crossrefs || [])) items.push({ id: e.id, field: "crossref(on " + x.about + ")", url: x.url });
 }
 
 // Dedupe by URL (remember every place it appears)
@@ -83,6 +84,19 @@ async function check(url) {
     return fetch(url, Object.assign({ method: method, signal: ac.signal }, opts))
       .finally(function () { clearTimeout(t); });
   }
+  // marxists.org serves missing pages as HTTP 200 with a "File Not Found" body,
+  // so HEAD status alone misses those soft-404s. For that host, GET and scan.
+  if (isSoftDeadHost(url)) {
+    try {
+      const res = await withTimeout("GET");
+      if (res.status >= 200 && res.status < 400) {
+        var body = "";
+        try { body = (await res.text()).slice(0, 4000); } catch (_) {}
+        if (/file not found|page not found|404 not found|could not be found/i.test(body)) return 404;
+      }
+      return res.status;
+    } catch (e1) { return "ERR:" + e1.message; }
+  }
   try {
     let res = await withTimeout("HEAD");
     if (res.status === 405 || res.status === 501) res = await withTimeout("GET"); // some servers refuse HEAD
@@ -92,6 +106,7 @@ async function check(url) {
     catch (e2) { return "ERR:" + e2.message; }
   }
 }
+function isSoftDeadHost(url) { try { return new URL(url).hostname.endsWith("marxists.org"); } catch (_) { return false; } }
 
 const dead = [], errored = [], ok = [], botwalled = [];
 const urls = Array.from(byUrl.keys());

@@ -9,5 +9,9 @@ window.LM_CONTENT["kautsky"] = {
   sources: [
     { label: "Wikipedia: Karl Kautsky (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Karl_Kautsky" },
     { label: "Kautsky Archive (Marxists.org)", url: "https://www.marxists.org/archive/kautsky/index.htm" }
+  ],
+  crossrefs: [
+    { about: "lenin", label: "The Dictatorship of the Proletariat (1918)", url: "https://www.marxists.org/archive/kautsky/1918/dictprole/index.htm" },
+    { about: "trotsky", label: "Terrorism and Communism (1919)", url: "https://www.marxists.org/archive/kautsky/1919/terrcomm/index.htm" }
   ]
 };

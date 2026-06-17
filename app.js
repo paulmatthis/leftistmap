@@ -382,10 +382,23 @@
       // then append any academic further-reading citations.
       var cites = (data.sources || []).filter(function (s) { return /wikipedia\.org/i.test(s.url); });
       cites = cites.concat(data.reading || []);
-      src.innerHTML = '<span class="src-label">Sources &amp; further reading</span>' +
+      var html = '<span class="src-label">Sources &amp; further reading</span>' +
         cites.map(function (s) {
           return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + "</a>";
         }).join("");
+      // Cross-references: works this thinker wrote about (or in answer to) another
+      // figure on the map. `about` is that figure's entry id, so this doubles as the
+      // raw material for the planned "debate" mode.
+      var cr = data.crossrefs || [];
+      if (cr.length) {
+        html += '<span class="src-label">In their own words: on fellow thinkers</span>' +
+          cr.map(function (s) {
+            var who = byId[s.about] ? byId[s.about].name : null;
+            var tag = who ? '<span class="src-on">on ' + esc(who) + "</span> " : "";
+            return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + tag + esc(s.label) + "</a>";
+          }).join("");
+      }
+      src.innerHTML = html;
     });
 
     modal.hidden = false;

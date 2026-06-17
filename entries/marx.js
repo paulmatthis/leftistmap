@@ -14,5 +14,9 @@ window.LM_CONTENT["marx"] = {
   sources: [
     { label: "Wikipedia: Karl Marx (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Karl_Marx" },
     { label: "Marxists Internet Archive", url: "https://www.marxists.org/archive/marx/index.htm" }
+  ],
+  crossrefs: [
+    { about: "engels", label: "Manifesto of the Communist Party (1848, with Engels)", url: "https://www.marxists.org/archive/marx/works/1848/communist-manifesto/index.htm" },
+    { about: "engels", label: "The German Ideology (1845, with Engels)", url: "https://www.marxists.org/archive/marx/works/1845/german-ideology/index.htm" }
   ]
 };

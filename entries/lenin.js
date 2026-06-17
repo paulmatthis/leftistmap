@@ -9,5 +9,11 @@ window.LM_CONTENT["lenin"] = {
   sources: [
     { label: "Wikipedia: Vladimir Lenin (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Vladimir_Lenin" },
     { label: "Lenin Internet Archive (Marxists.org)", url: "https://www.marxists.org/archive/lenin/index.htm" }
+  ],
+  crossrefs: [
+    { about: "kautsky", label: "The Proletarian Revolution and the Renegade Kautsky (1918)", url: "https://www.marxists.org/archive/lenin/works/1918/prrk/index.htm" },
+    { about: "luxemburg", label: "The Junius Pamphlet (1916)", url: "https://www.marxists.org/archive/lenin/works/1916/jul/junius-pamphlet.htm" },
+    { about: "trotsky", label: "Letter to the Congress (Testament, 1922)", url: "https://www.marxists.org/archive/lenin/works/1922/dec/testamnt/congress.htm" },
+    { about: "stalin", label: "Letter to the Congress (Testament, 1922)", url: "https://www.marxists.org/archive/lenin/works/1922/dec/testamnt/congress.htm" }
   ]
 };

@@ -120,10 +120,12 @@ The goal is an even-handed, complete map, including figures a partisan account w
   ~30s budget under the 45s cap, and caches confirmations in `tools/.isbn-verify-cache.json`
   (gitignored) so re-runs are fast. Run one pass per bash call; re-run until it reports
   "0 changed, 0 to-do". No hand spot-checking needed: every isbn it writes is verified live.
-- `tools/check-links.mjs` — read-only verifier of archive/source/reading/book links. Checks
-  several links at once (bounded concurrency) so it finishes within the sandbox cap. Treats
+- `tools/check-links.mjs` — read-only verifier of archive/source/reading/book/crossref links.
+  Checks several at once (bounded concurrency) so it finishes within the sandbox cap. Treats
   any `bookshop.org` 403 as bot-walled/unverifiable, not dead, and lists search-link
-  fallbacks (books with no isbn) separately under `--all` rather than HTTP-checking them.
+  fallbacks (books with no isbn) separately under `--all`. For `marxists.org` it GETs and
+  scans the body, because that host serves missing pages as HTTP 200 with a "File Not Found"
+  body (a soft-404 a HEAD check would miss).
 - `tools/repair-links.mjs`, `tools/prune-dead-sources.mjs` — one-off cleanup scripts
   already run; keep for reference.
 
@@ -181,6 +183,10 @@ window.LM_CONTENT["kautsky"] = {
   sources: [
     { label: "Wikipedia: Karl Kautsky (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Karl_Kautsky" },
     { label: "Kautsky Archive (Marxists.org)", url: "https://www.marxists.org/archive/kautsky/index.htm" }
+  ],
+  crossrefs: [
+    { about: "lenin", label: "The Dictatorship of the Proletariat (1918)", url: "https://www.marxists.org/archive/kautsky/1918/dictprole/index.htm" },
+    { about: "trotsky", label: "Terrorism and Communism (1919)", url: "https://www.marxists.org/archive/kautsky/1919/terrcomm/index.htm" }
   ]
 };
 ```
@@ -189,7 +195,18 @@ window.LM_CONTENT["kautsky"] = {
   entities or literal accented letters. No em-dashes.
 - `sources` — MUST include the Wikipedia page (the footer shows Wikipedia + `reading` and
   drops the archive source, which is the top button).
-- `reading` — OPTIONAL stable academic links (SEP, IEP). Do not guess journal URLs.
+- `reading` — OPTIONAL stable academic/encyclopedic links (SEP, IEP). Do not guess journal
+  URLs. SEP exists for some figures (Marx, Engels, Luxemburg) and not others (Lenin, Trotsky,
+  Stalin, Kautsky have none); when there is no SEP/IEP entry, prefer leaving `reading` out
+  over padding it with a tangential paper. Britannica is bot-walled (403) and not auto-
+  verifiable, so avoid it.
+- `crossrefs` — OPTIONAL. Works THIS thinker wrote about (or in direct answer to) ANOTHER
+  figure on the map: `{ about: "<entry-id>", label, url }`. `about` must be a real entry id.
+  The modal renders these under "In their own words: on fellow thinkers" with an "on <Name>"
+  tag, and the id makes them the raw material for the planned debate mode. Add the reciprocal
+  where it exists (Lenin's reply to Kautsky on one card, Kautsky's original on the other).
+  Prefer a primary full text on `marxists.org`/`theanarchistlibrary.org`. Co-authored works
+  (e.g. the Manifesto) count and go on both authors' cards. Verify every URL (see below).
 
 ---
 
@@ -263,7 +280,10 @@ reintroduce physics or barycenter placement without an explicit ask.
   clamped inside the viewport.
 - `litConnectors(id, on)` — toggles the `.lit` class on connector paths touching a card.
 - Modal (`openModal`): header, quote, link buttons, lazy summary, then
-  `#modal-connections` (same chips, click closes modal + jumps), then sources footer.
+  `#modal-connections` (same chips, click closes modal + jumps), then the sources footer.
+  The footer builds "Sources & further reading" (Wikipedia + `reading`) and, when the entry
+  has `crossrefs`, a second "In their own words: on fellow thinkers" block, each link tagged
+  `on <Name>` (resolved from the `about` id via `byId`).
 - `jumpToCard(id)` — used by search results AND connection chips. Scrolls the card to
   center and plays the `cardjump` highlight (hover-style lift + radiating red glow, ~1.5s)
   while lighting its connectors.
@@ -324,6 +344,42 @@ the data as permanently correct.
 
 ---
 
+## Citations and cross-references (the process)
+
+The `reading` and `crossrefs` fields are being built out per entry. The goal is a clean,
+verifiable citation section, not volume: a few well-chosen links beat seven sloppy ones.
+
+Sourcing, in priority order:
+
+1. **Primary cross-references first.** A work the thinker wrote about another figure on the
+   map, ideally a full text on `marxists.org` or `theanarchistlibrary.org`. These are the
+   richest material and the seed for debate mode. Add the reciprocal where it exists.
+2. **Encyclopedic.** Stanford Encyclopedia of Philosophy (`plato.stanford.edu/entries/<x>/`)
+   where an entry exists; the Internet Encyclopedia of Philosophy otherwise. Both are open
+   and authoritative.
+3. **Academic.** Use the open scholarly-metadata APIs (no key needed) the way a tool like
+   Zotero does: OpenAlex (`api.openalex.org/works?search=...&filter=is_oa:true`) and Crossref
+   (`api.crossref.org/works?query=...`) to find DOIs, preferring open-access. EYEBALL the
+   results: a keyword search returns a lot of tangential papers, so only keep ones clearly
+   and centrally about the figure. A wrong citation is worse than none.
+
+Do NOT use Sci-Hub or other pirated-paper mirrors. Do not invent works or guess URLs.
+
+Verification (mandatory, this is the whole point):
+
+- Confirm the page actually exists before writing the link. `marxists.org` returns HTTP 200
+  with a "File Not Found" body for missing pages, so check the page TITLE/body, not just the
+  status (fetch the page and read its `<title>`; `check-links.mjs` now does this for that
+  host automatically). Several plausible paths 404 or soft-404, so test, do not assume.
+- After writing, run `node tools/check-links.mjs` and confirm 0 dead for the entries touched.
+- Every `crossrefs[].about` must be a real entry id (a quick node script over `LM_CONTENT`
+  catches typos).
+
+Status of the build-out: a first cluster is done as a pilot (see Current status). The same
+process scales to the rest of the map cluster by cluster.
+
+---
+
 ## Verifying behavior changes (headless harness)
 
 When changing `app.js`/`styles.css`/`index.html`, verify with jsdom in the sandbox before
@@ -349,7 +405,9 @@ committing (this caught real bugs this session):
 4. `node tools/fetch-images.mjs` for new portraits (manual add if Wikipedia has none).
 5. `node tools/fetch-books.mjs` for ISBNs, one pass per bash call, until "0 changed,
    0 to-do". Then `node tools/check-links.mjs` should report 0 dead book links.
-6. `rm -f .fuse_hidden*`, then commit.
+6. If you touched `reading`/`crossrefs`: every `crossrefs[].about` is a real entry id, and
+   `node tools/check-links.mjs` reports 0 dead (it soft-404-checks marxists.org).
+7. `rm -f .fuse_hidden*`, then commit.
 
 ---
 
@@ -372,14 +430,24 @@ committing (this caught real bugs this session):
   button; connection chips in the modal; search jump + the `cardjump` flash; the affiliation
   filter (header + legend, multi-select, animated reflow); the `industrial` org; the zigzag
   layout; the `tag` override.
+- Citations build-out STARTED. The `crossrefs` field and its modal section ("In their own
+  words: on fellow thinkers") exist, and a pilot cluster is done: marx, engels, lenin,
+  trotsky, stalin, kautsky, luxemburg (18 verified cross-references plus SEP further-reading
+  where it exists). All reciprocal (Lenin↔Kautsky, Lenin↔Luxemburg, Lenin↔Trotsky,
+  Lenin↔Stalin, Trotsky↔Stalin, Trotsky↔Kautsky, Marx↔Engels). The remaining ~67 entries
+  still need this treatment, cluster by cluster, per "Citations and cross-references".
 
 ---
 
 ## Deferred ideas / next steps
 
-- A few entries could still gain academic `reading` links beyond Wikipedia.
+- Extend `crossrefs`/`reading` to the remaining ~67 entries, cluster by cluster, following
+  "Citations and cross-references". Natural next clusters: the anarchists (Bakunin, Kropotkin,
+  Malatesta, Goldman, Berkman) and the Frankfurt School (Adorno, Horkheimer, Marcuse, Benjamin,
+  Fromm), both dense with works-about-each-other.
 - Possible labor-organizing expansion (Alinsky, Mazzocchi peers) if the branch grows.
 - "Battle" mode (designed, not built): pick two+ thinkers; they rise and face off; the
   earlier opens a claim, the other responds; outcomes can be agreement, disagreement, or
-  qualified agreement, narrated in tongue-in-cheek theory language. Its own task; no data
-  work needed beyond what exists.
+  qualified agreement, narrated in tongue-in-cheek theory language. The `crossrefs` field now
+  feeds this directly: it records which thinker wrote about which (the `about` id) and links
+  the primary text, so the debate can be grounded in their own words rather than invented.

@@ -53,10 +53,13 @@ The fields `center`, `pinNear`, `row`, and `lane` are vestigial. Earlier layouts
 the current zigzag layout ignores them. Existing ones are harmless and left in place, but
 new entries do not need them.
 
-The matching content file looks like:
+The matching content file holds the modal text plus its citations: `sources` (incl.
+Wikipedia), optional `reading` (further reading, e.g. SEP), and optional `crossrefs`, which
+are works the thinker wrote about another figure on the map (`{ about: "<id>", label, url }`,
+shown as "In their own words: on fellow thinkers"). It looks like:
 
 ```js
-window.LM_CONTENT["marx"] = { summary: "<p>...</p>", sources: [...], reading: [...] };
+window.LM_CONTENT["marx"] = { summary: "<p>...</p>", sources: [...], reading: [...], crossrefs: [...] };
 ```
 
 ## How the layout works

@@ -9,5 +9,9 @@ window.LM_CONTENT["stalin"] = {
   sources: [
     { label: "Wikipedia: Joseph Stalin (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Joseph_Stalin" },
     { label: "Stalin Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/stalin/index.htm" }
+  ],
+  crossrefs: [
+    { about: "trotsky", label: "Trotskyism or Leninism? (1924)", url: "https://www.marxists.org/reference/archive/stalin/works/1924/11_19.htm" },
+    { about: "lenin", label: "The Foundations of Leninism (1924)", url: "https://www.marxists.org/reference/archive/stalin/works/1924/foundations-leninism/index.htm" }
   ]
 };

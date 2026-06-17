@@ -9,5 +9,12 @@ window.LM_CONTENT["engels"] = {
   sources: [
     { label: "Wikipedia: Friedrich Engels (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Friedrich_Engels" },
     { label: "Marx/Engels Archive (Marxists.org)", url: "https://www.marxists.org/archive/marx/index.htm" }
+  ],
+  reading: [
+    { label: "Stanford Encyclopedia of Philosophy: Friedrich Engels", url: "https://plato.stanford.edu/entries/engels/" }
+  ],
+  crossrefs: [
+    { about: "marx", label: "Speech at the Graveside of Karl Marx (1883)", url: "https://www.marxists.org/archive/marx/works/1883/death/burial.htm" },
+    { about: "marx", label: "Manifesto of the Communist Party (1848, with Marx)", url: "https://www.marxists.org/archive/marx/works/1848/communist-manifesto/index.htm" }
   ]
 };

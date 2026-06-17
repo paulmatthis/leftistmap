@@ -9,5 +9,11 @@ window.LM_CONTENT["trotsky"] = {
   sources: [
     { label: "Wikipedia: Leon Trotsky (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Leon_Trotsky" },
     { label: "Trotsky Archive (Marxists.org)", url: "https://www.marxists.org/archive/trotsky/index.htm" }
+  ],
+  crossrefs: [
+    { about: "lenin", label: "On Lenin (1925)", url: "https://www.marxists.org/archive/trotsky/1925/lenin/index.htm" },
+    { about: "kautsky", label: "Terrorism and Communism: A Reply to Karl Kautsky (1920)", url: "https://www.marxists.org/archive/trotsky/1920/terrcomm/index.htm" },
+    { about: "stalin", label: "The Stalin School of Falsification (1937)", url: "https://www.marxists.org/archive/trotsky/1937/ssf/index.htm" },
+    { about: "stalin", label: "The Revolution Betrayed (1936)", url: "https://www.marxists.org/archive/trotsky/1936/revbet/index.htm" }
   ]
 };

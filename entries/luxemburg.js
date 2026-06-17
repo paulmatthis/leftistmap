@@ -9,5 +9,12 @@ window.LM_CONTENT["luxemburg"] = {
   sources: [
     { label: "Wikipedia: Rosa Luxemburg (CC BY-SA)", url: "https://en.wikipedia.org/wiki/Rosa_Luxemburg" },
     { label: "Luxemburg Archive (Marxists.org)", url: "https://www.marxists.org/archive/luxemburg/index.htm" }
+  ],
+  reading: [
+    { label: "Stanford Encyclopedia of Philosophy: Rosa Luxemburg", url: "https://plato.stanford.edu/entries/luxemburg/" }
+  ],
+  crossrefs: [
+    { about: "lenin", label: "Organizational Questions of the Russian Social Democracy (1904)", url: "https://www.marxists.org/archive/luxemburg/1904/questions-rsd/index.htm" },
+    { about: "lenin", label: "The Russian Revolution (1918)", url: "https://www.marxists.org/archive/luxemburg/1918/russian-revolution/index.htm" }
   ]
 };
