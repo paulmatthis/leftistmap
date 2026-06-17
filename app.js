@@ -188,6 +188,12 @@
     if (previewId && previewId !== e.id) litConnectors(previewId, false);
     previewId = e.id;
     previewEl.innerHTML = "";
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "pv-close";
+    close.setAttribute("aria-label", "Close preview");
+    close.innerHTML = "&times;";
+    previewEl.appendChild(close);
     var p = document.createElement("p");
     p.className = "pv-text";
     p.textContent = e.preview;
@@ -221,6 +227,7 @@
   previewEl.addEventListener("focusin", function () { clearTimeout(previewHideTimer); });
   previewEl.addEventListener("focusout", scheduleHidePreview);
   previewEl.addEventListener("click", function (ev) {
+    if (ev.target.closest(".pv-close")) { hidePreview(); return; }
     var t = ev.target.closest(".conn-tag");
     if (!t) return;
     hidePreview();
