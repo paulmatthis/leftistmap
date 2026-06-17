@@ -1,8 +1,8 @@
 # macOS
 .DS_Store
 
-# Claude local (machine-specific) settings
-.claude/settings.local.json
+# Claude
+.claude/
 
 # Node
 node_modules/
@@ -12,5 +12,9 @@ npm-debug.log*
 *.log
 .cache/
 
-# fetch-books.mjs Bookshop-verification cache (machine-local, regenerable)
-tools/.isbn-verify-cache.json
+# Claude agent handoff files (machine-local)
+AGENT_PROMPT.md
+HANDOFF.md
+
+# tools folder (machine-local)
+tools/
