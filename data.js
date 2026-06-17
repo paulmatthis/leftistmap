@@ -1184,7 +1184,7 @@ window.ENTRIES = [
     quote: "If you do not want to talk about capitalism, then you had better keep quiet about fascism.",
     archive: { label: "Horkheimer Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/horkheimer/index.htm" },
     books: [
-      { title: "Dialectic of Enlightenment" },
+      { title: "Dialectic of Enlightenment", isbn: "9780804736329" },
       { title: "Eclipse of Reason", isbn: "9781443730419" },
       { title: "Critical Theory: Selected Essays", isbn: "9780826400833" }
     ],
@@ -1357,7 +1357,7 @@ window.ENTRIES = [
     quote: "Never be deceived that the rich will permit you to vote away their wealth.",
     archive: { label: "Parsons at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/lucy-e-parsons" },
     books: [
-      { title: "Lucy Parsons: Freedom, Equality, and Solidarity" }
+      { title: "Lucy Parsons: Freedom, Equality, and Solidarity", isbn: "9780882860121" }
     ],
     name: "Lucy Parsons",
     school: "Anarcho-Communism · Labor Anarchism",
