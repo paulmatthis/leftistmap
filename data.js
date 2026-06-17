@@ -1640,7 +1640,7 @@ window.ENTRIES = [
     yearSort: 1975,
     era: "Postwar labor militancy",
     parents: ["luxemburg", "gramsci"],
-    thumb: "wiki:Tony_Mazzocchi",
+    thumb: "img/mazzocchi.webp",
     thumbPos: "center 20%",
     initials: "TM",
     preview:
@@ -1661,7 +1661,7 @@ window.ENTRIES = [
     yearSort: 1955,
     era: "Postwar community organizing",
     parents: [],
-    thumb: "wiki:Fred_Ross_(community_organizer)",
+    thumb: "img/ross.jpg",
     thumbPos: "center 20%",
     initials: "FR",
     preview:
