@@ -11,3 +11,6 @@ npm-debug.log*
 # Editor / scratch
 *.log
 .cache/
+
+# fetch-books.mjs Bookshop-verification cache (machine-local, regenerable)
+tools/.isbn-verify-cache.json

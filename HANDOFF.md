@@ -111,13 +111,19 @@ The goal is an even-handed, complete map, including figures a partisan account w
   `initials` if an image is missing or fails).
 - `tools/fetch-images.mjs` — resolves `thumb: "wiki:Page_Title"` to that Wikipedia page's
   lead image, saves `img/<id>.<ext>`, rewrites the path in `data.js`.
-- `tools/fetch-books.mjs` — resolves each book `title` to an ISBN via Open Library and
-  writes it into `data.js`. Resilient: writes after every hit and stops before the 45s
-  sandbox cap, so re-run it until it reports no new resolutions (each pass skips books that
-  already have an isbn). It tries title+author, title, subtitle-stripped, and general
-  queries, and REQUIRES the matched book's `author_name` to contain the entry author's
-  surname (prevents study-guide/commentary mis-hits). Spot-check a few links on bookshop.org.
-- `tools/check-links.mjs` — read-only verifier of archive/source/reading/book links.
+- `tools/fetch-books.mjs` — resolves each book `title` to an ISBN that is actually stocked
+  on Bookshop and writes it into `data.js`. It gathers candidate ISBNs from Open Library
+  (author-guarded: the matched doc's `author_name` must contain the entry author's surname,
+  which blocks study-guide/commentary mis-hits) and then writes only the first candidate
+  that returns 200 at `bookshop.org/a/104178/<isbn>`. It re-verifies any existing isbn and
+  blanks it if Bookshop no longer stocks it. Resilient: writes after every change, has a
+  ~30s budget under the 45s cap, and caches confirmations in `tools/.isbn-verify-cache.json`
+  (gitignored) so re-runs are fast. Run one pass per bash call; re-run until it reports
+  "0 changed, 0 to-do". No hand spot-checking needed: every isbn it writes is verified live.
+- `tools/check-links.mjs` — read-only verifier of archive/source/reading/book links. Checks
+  several links at once (bounded concurrency) so it finishes within the sandbox cap. Treats
+  any `bookshop.org` 403 as bot-walled/unverifiable, not dead, and lists search-link
+  fallbacks (books with no isbn) separately under `--all` rather than HTTP-checking them.
 - `tools/repair-links.mjs`, `tools/prune-dead-sources.mjs` — one-off cleanup scripts
   already run; keep for reference.
 
@@ -146,8 +152,10 @@ Field order does not matter. Fields:
   `marxists.org/archive/<name>/` or `theanarchistlibrary.org/category/author/<slug>`. If no
   archive exists, use `{ label: "...", url: "" }` (the button is hidden when url is empty).
 - `books` — array of `{ title: "..." }`, each on its own line (the book script matches the
-  literal string to inject `isbn`). Leave ISBN out; the script fills it. The modal renders
-  a Bookshop button only for books that HAVE an isbn.
+  literal string to inject `isbn`). Leave ISBN out; `fetch-books.mjs` fills it with a
+  Bookshop-verified ISBN. Every book renders a buy button: a direct product link when an
+  isbn is present, otherwise a title+author Bookshop search link (so older/obscure works
+  with no stocked edition still get a working, never-404 button).
 - `thumb` — `"wiki:Wikipedia_Page_Title"`; the image script localizes it to `img/<id>`. If
   Wikipedia exposes no API lead image, the fetch fails and the card shows `initials` (add
   an image manually to `img/<id>.<ext>` and point `thumb` at it).
@@ -262,39 +270,44 @@ reintroduce physics or barycenter placement without an explicit ask.
 
 ## Book links (Bookshop) — how it works, the process, and a known limitation
 
-**How a buy button is built.** Each book in `data.js` is `{ title, isbn }`. The modal
-(`renderLinks` in `app.js`) builds `https://bookshop.org/a/104178/<isbn>` and renders a
-button ONLY when the book has an `isbn`. No isbn = no button (graceful).
+**How a buy button is built.** Each book in `data.js` is `{ title }` or `{ title, isbn }`.
+The modal (`renderLinks` in `app.js`) builds the link two ways, and EVERY book gets a button:
+- isbn present: `https://bookshop.org/a/104178/<isbn>`, a direct affiliate product link.
+- no isbn: `https://bookshop.org/search?keywords=<title author>&affiliate=104178`, a
+  title+author search. A search page always resolves for a human, so it never 404s.
 
-**How the ISBNs get there (the process used, repeat it for new books).**
-1. `tools/fetch-books.mjs` looks each `title` up on the free Open Library search API and
-   writes the resulting ISBN back into `data.js`. It is resilient: it writes after every
-   hit and stops before the 45s sandbox cap, so you RE-RUN it until a pass reports no new
-   resolutions (each pass skips books that already have an isbn). Running it as a chained
-   loop in one bash call will hit the timeout and the processes collide; run one pass per
-   bash call.
-2. It tries several queries in order (title+author, title, subtitle-stripped, general) and
-   REQUIRES the matched doc's `author_name` to contain the entry author's surname. This
-   author guard exists because the looser queries otherwise grab similar-titled
-   commentaries and study guides (this actually happened: Beauvoir got "Nature of the
-   Second Sex", Graeber got a Debt study guide, Davis got an unrelated anthology). If you
-   ever loosen the queries, keep the author guard.
-3. After a bulk run, REVERSE-CHECK a sample: fetch `https://openlibrary.org/isbn/<isbn>.json`
-   and confirm the returned title matches. If you find mis-hits, blank all isbns
-   (`code.replace(/, isbn: "[^"]*"/g, "")`) and re-fetch with the guard, rather than trying
-   to surgically fix.
-4. Validate: all isbns well-formed (`/^(97[89]\d{10}|\d{9}[\dX])$/`), and no isbn appears on
-   two DIFFERENT books (a shared isbn is a mis-hit, EXCEPT the legitimately co-authored
-   `Dialectic of Enlightenment`, which Adorno and Horkheimer share on purpose).
+**Why two ways (the failure this fixes).** The old approach pinned every button to one
+Open Library ISBN and trusted it. Open Library knows about editions Bookshop does not stock,
+so a third of the buttons 404'd. An ISBN is only written now if Bookshop actually serves it;
+books with no stocked edition fall back to the search link instead of pointing nowhere.
 
-**Known limitation (address in the future).** Pinning a buy link to one Open Library ISBN
-is fragile on two fronts: (a) Open Library often has no ISBN for older/obscure works, so
-those books get no button at all (7 currently), and (b) even a valid ISBN is not
-necessarily stocked on Bookshop, so a button can 404. A better future approach: link to a
-Bookshop *search* by title+author (resilient, never 404s on a missing edition) or use a
-curated/verified ISBN list, instead of trusting whatever single edition Open Library
-returns. Until then, the script's reminder stands: spot-check links and swap unstocked
-ISBNs by hand.
+**How the ISBNs get there (the process, repeat it for new books).**
+1. Add the book as `{ title: "..." }` (no isbn). Run `node tools/fetch-books.mjs`, one pass
+   per bash call (chaining passes in one call hits the timeout and they collide), and re-run
+   until a pass reports "0 changed, 0 to-do".
+2. Per book it gathers candidate ISBNs from Open Library (queries in order: title+author,
+   title, subtitle-stripped, general), keeps only docs whose `author_name` contains the
+   entry author's surname, then writes the FIRST candidate that returns 200 at
+   `bookshop.org/a/104178/<isbn>`. The author guard blocks similar-titled commentaries and
+   study guides (this really happened: Beauvoir got "Nature of the Second Sex", Graeber a
+   Debt study guide, Davis an unrelated anthology). If you ever loosen the queries, keep it.
+3. It also RE-VERIFIES any isbn already in `data.js` against Bookshop and blanks one that no
+   longer resolves, so stale stock self-heals on the next run. The script is therefore the
+   repair tool too: to fix a dead book link, just re-run it. Confirmations are cached in
+   `tools/.isbn-verify-cache.json` (gitignored, 30-day TTL) so re-runs are fast; a book with
+   no stocked edition is negative-cached so passes do not keep re-resolving it.
+4. Validate with `node tools/check-links.mjs`: book product links should report 0 dead
+   (the script only writes verified ISBNs). Also confirm all isbns are well-formed
+   (`/^(97[89]\d{10}|\d{9}[\dX])$/`) and no isbn appears on two DIFFERENT books (a shared
+   isbn is a mis-hit, EXCEPT the legitimately co-authored `Dialectic of Enlightenment`,
+   which Adorno and Horkheimer share on purpose).
+
+**Residual caveat.** A search-link fallback lands on a results page, not a product page, and
+Bookshop's search endpoint is bot-walled (it 403s any script), so the checker cannot
+auto-verify those links; they are valid by construction. And because retail stock changes,
+an ISBN verified today can stop being stocked later. That is caught the next time
+`fetch-books.mjs` or `check-links.mjs` runs, so re-run them periodically rather than treating
+the data as permanently correct.
 
 ---
 
@@ -321,7 +334,8 @@ committing (this caught real bugs this session):
    no backward edges (parent `yearSort` <= child `yearSort`). A quick node script that
    loads `window.ENTRIES` and checks all of this is the fastest way.
 4. `node tools/fetch-images.mjs` for new portraits (manual add if Wikipedia has none).
-5. `node tools/fetch-books.mjs` for ISBNs (chunk it to avoid the timeout).
+5. `node tools/fetch-books.mjs` for ISBNs, one pass per bash call, until "0 changed,
+   0 to-do". Then `node tools/check-links.mjs` should report 0 dead book links.
 6. `rm -f .fuse_hidden*`, then commit.
 
 ---
@@ -335,11 +349,12 @@ committing (this caught real bugs this session):
   leftist-feminist set, and a labor-organizing branch (IWW → CIO → Mazzocchi → McAlevey,
   plus Fred Ross's community-organizing line into McAlevey).
 - All portraits are localized (no `wiki:` thumbs remain).
-- Book ISBNs populated: 143 of 150 books have author-validated ISBNs (Bookshop buttons
-  render). 7 obscure pamphlets/biographies have no standard ISBN and simply show no button
-  (proudhon Philosophy of Poverty, kollontai Sexual Relations and the Class Struggle,
-  saint-simon New Christianity, durruti Durruti in the Spanish Revolution, pankhurst Soviet
-  Russia As I Saw It, the Mazzocchi biography (different author), ross Axioms for Organizers).
+- Book buy-links overhauled to be reliable: 131 of 150 books carry an ISBN that was
+  verified live on Bookshop (`/a/104178/<isbn>` returns 200), and the other 19 (older or
+  obscure works with no stocked edition) fall back to a title+author Bookshop search link.
+  Every book renders a working button; `check-links.mjs` reports 0 dead, down from 95.
+  ISBNs are no longer trusted on faith: `fetch-books.mjs` confirms each against Bookshop
+  before writing it and re-verifies/blanks stale ones on re-run.
 - Features built this session: interactive hover preview with connection chips + close
   button; connection chips in the modal; search jump + the `cardjump` flash; the affiliation
   filter (header + legend, multi-select, animated reflow); the `industrial` org; the zigzag
@@ -349,9 +364,6 @@ committing (this caught real bugs this session):
 
 ## Deferred ideas / next steps
 
-- Rework book buy-links so they do not depend on one Open Library ISBN (which fails
-  often: missing editions, or valid-but-unstocked-on-Bookshop 404s). Prefer a Bookshop
-  title+author search link or a curated ISBN list. See "Book links" above.
 - A few entries could still gain academic `reading` links beyond Wikipedia.
 - Possible labor-organizing expansion (Alinsky, Mazzocchi peers) if the branch grows.
 - "Battle" mode (designed, not built): pick two+ thinkers; they rise and face off; the

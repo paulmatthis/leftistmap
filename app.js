@@ -277,10 +277,18 @@
       box.appendChild(a);
     }
     (e.books || []).forEach(function (bk) {
-      if (!bk.isbn) return; // only books the script has resolved to an ISBN
       var a = document.createElement("a");
       a.className = "lm-link lm-link--book";
-      a.href = "https://bookshop.org/a/104178/" + encodeURIComponent(bk.isbn);
+      if (bk.isbn) {
+        // Direct affiliate product page. fetch-books.mjs only writes an isbn it
+        // has confirmed is stocked on Bookshop, so this resolves rather than 404s.
+        a.href = "https://bookshop.org/a/104178/" + encodeURIComponent(bk.isbn);
+      } else {
+        // No stocked edition is known for this book, so a pinned ISBN would 404.
+        // A title+author search always resolves, and still carries the affiliate id.
+        a.href = "https://bookshop.org/search?keywords=" +
+          encodeURIComponent(bk.title + " " + e.name) + "&affiliate=104178";
+      }
       a.target = "_blank"; a.rel = "noopener";
       a.innerHTML = '<span class="lm-link__tag">Book</span> ' + esc(bk.title);
       box.appendChild(a);

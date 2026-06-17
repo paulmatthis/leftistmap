@@ -10,6 +10,16 @@
      - each sources[].url     (entries/<id>.js)
      - each reading[].url     (entries/<id>.js)
 
+   Notes on Bookshop:
+     - A book WITH an isbn renders a direct product link (/a/104178/<isbn>);
+       those return real 200/404 and are checked. fetch-books.mjs only ever
+       writes an isbn it confirmed returns 200, so these should stay green.
+     - A book WITHOUT an isbn renders a title+author SEARCH link instead. The
+       search endpoint is bot-walled (it returns 403 to any script), so it is
+       NOT HTTP-checked here; it is structurally valid by construction and is
+       reported separately under --all so you can eyeball it.
+     - Any bookshop.org 403 is treated as bot-walled (UNVERIFIABLE), never DEAD.
+
    Run from the project root:
        node tools/check-links.mjs          # report dead + errors
        node tools/check-links.mjs --all    # also list the OK links
@@ -38,12 +48,19 @@ for (const f of fs.readdirSync(entriesDir)) {
   catch (err) { console.error("parse fail " + f + ": " + err.message); }
 }
 
-// Collect link items
+// Collect link items. Books with an isbn are HTTP-checked; books without one
+// render a search link (bot-walled, structurally valid) collected separately.
 const items = [];
+const searchItems = [];
 for (const e of entries) {
   if (e.archive && e.archive.url) items.push({ id: e.id, field: "archive", url: e.archive.url });
   for (const bk of (e.books || [])) {
-    if (bk.isbn) items.push({ id: e.id, field: "book(" + bk.title + ")", url: "https://bookshop.org/a/104178/" + bk.isbn });
+    if (bk.isbn) {
+      items.push({ id: e.id, field: "book(" + bk.title + ")", url: "https://bookshop.org/a/104178/" + bk.isbn });
+    } else {
+      const q = encodeURIComponent(bk.title + " " + e.name);
+      searchItems.push({ id: e.id, field: "book(" + bk.title + ")", url: "https://bookshop.org/search?keywords=" + q + "&affiliate=104178" });
+    }
   }
   const c = win.LM_CONTENT[e.id] || {};
   for (const s of (c.sources || [])) items.push({ id: e.id, field: "source", url: s.url });
@@ -76,17 +93,33 @@ async function check(url) {
   }
 }
 
-const dead = [], errored = [], ok = [];
+const dead = [], errored = [], ok = [], botwalled = [];
 const urls = Array.from(byUrl.keys());
-console.log("Checking " + urls.length + " unique links across " + entries.length + " entries...\n");
+console.log("Checking " + urls.length + " unique links across " + entries.length + " entries...");
+console.log("(" + searchItems.length + " more are search-link fallbacks, listed under --all, not HTTP-checked.)\n");
 
-for (const url of urls) {
-  const status = await check(url);
+function isBookshop(url) { try { return new URL(url).hostname.endsWith("bookshop.org"); } catch (_) { return false; } }
+
+function classify(url, status) {
   const where = byUrl.get(url).join(", ");
   if (typeof status === "number" && status >= 200 && status < 400) ok.push({ url, status, where });
+  else if (status === 403 && isBookshop(url)) botwalled.push({ url, status, where });
   else if (typeof status === "number") dead.push({ url, status, where });
   else errored.push({ url, status, where });
 }
+
+// Bounded-concurrency pool: sequential checking of ~280 links overruns the
+// sandbox's per-call time limit, so check several at once. 8 is polite across
+// the mix of hosts and finishes well inside the cap.
+const CONCURRENCY = 8;
+let cursor = 0;
+async function worker() {
+  while (cursor < urls.length) {
+    const url = urls[cursor++];
+    classify(url, await check(url));
+  }
+}
+await Promise.all(Array.from({ length: Math.min(CONCURRENCY, urls.length) }, worker));
 
 function dump(title, list) {
   if (!list.length) return;
@@ -96,8 +129,12 @@ function dump(title, list) {
 
 dump("DEAD (4xx/5xx), fix or remove these:", dead);
 dump("UNREACHABLE (network/timeout, may be transient), recheck:", errored);
+if (showAll) dump("BOT-WALLED (bookshop 403, not auto-verifiable, assumed valid):", botwalled);
+if (showAll) dump("SEARCH-LINK FALLBACK (no isbn; not HTTP-checked):", searchItems.map(function (it) { return { url: it.url, status: "n/a", where: it.id + " / " + it.field }; }));
 if (showAll) dump("OK", ok);
 
-console.log("\nSummary: " + ok.length + " ok, " + dead.length + " dead, " + errored.length + " unreachable.");
-console.log("This script changes nothing. Use the DEAD list to correct data.js / entries/ by hand,");
-console.log("or feed it to the bulk agent to repair. Wikipedia links are the safe fallback.");
+console.log("\nSummary: " + ok.length + " ok, " + dead.length + " dead, " + errored.length +
+  " unreachable, " + botwalled.length + " bot-walled, " + searchItems.length + " search-fallback (unchecked).");
+console.log("DEAD book links should be empty: fetch-books.mjs only writes Bookshop-verified ISBNs.");
+console.log("To repair a dead book link, re-run tools/fetch-books.mjs (it re-verifies and blanks dead ISBNs).");
+console.log("This script changes nothing. Wikipedia links are the safe fallback for sources.");

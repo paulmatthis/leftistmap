@@ -46,7 +46,8 @@ Each entry is one object in `window.ENTRIES` (in `data.js`). The important field
 - `orgs`: array of organization ids from `window.ORGS`; drives the small icons. May be
   empty.
 - `quote`, `archive`, `books`: the signature quote, the collected-works archive link, and
-  one to three notable works (Bookshop links are built from the ISBNs).
+  one to three notable works. Every book gets a Bookshop buy button: a direct product link
+  when a verified ISBN is present, otherwise a title+author search link.
 
 The fields `center`, `pinNear`, `row`, and `lane` are vestigial. Earlier layouts used them;
 the current zigzag layout ignores them. Existing ones are harmless and left in place, but
@@ -88,8 +89,11 @@ One hard rule worth repeating here: **No em-dashes. Ever.** The character `—` 
 
 - `node tools/fetch-images.mjs`: resolves each entry's `thumb: "wiki:Page_Title"` to that
   Wikipedia page's lead image, saves it under `img/`, and rewrites the path in `data.js`.
-- `node tools/fetch-books.mjs`: looks up an ISBN for each book title via Open Library and
-  writes it into `data.js` so the modal can build Bookshop links.
+- `node tools/fetch-books.mjs`: resolves each book title to an ISBN that is actually
+  stocked on Bookshop (it verifies candidates against `bookshop.org/a/104178/<isbn>` and
+  writes only one that returns 200) and writes it into `data.js`. Books with no stocked
+  edition get a search-link button instead. Re-running re-verifies and repairs stale ISBNs.
+  Run one pass per invocation until it reports "0 changed, 0 to-do".
 - `node tools/check-links.mjs`: verifies the archive, source, reading, and book links.
 
 After editing data, run `node --check data.js` and `node --check entries/<id>.js`, confirm

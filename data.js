@@ -46,9 +46,9 @@ window.ENTRIES = [
     quote: "The philosophers have only interpreted the world, in various ways; the point is to change it.",
     archive: { label: "Marxists Internet Archive", url: "https://www.marxists.org/archive/marx/index.htm" },
     books: [
-      { title: "The Communist Manifesto", isbn: "9780394602028" },
+      { title: "The Communist Manifesto", isbn: "9780879754464" },
       { title: "Capital, Volume One", isbn: "9781478371885" },
-      { title: "The Eighteenth Brumaire of Louis Bonaparte", isbn: "9780585015828" }
+      { title: "The Eighteenth Brumaire of Louis Bonaparte", isbn: "9798715825339" }
     ],
     name: "Karl Marx",
     school: "Marxism · Scientific Socialism",
@@ -71,9 +71,9 @@ window.ENTRIES = [
     quote: "The state is not abolished, it withers away.",
     archive: { label: "Marx / Engels Archive", url: "https://www.marxists.org/archive/marx/index.htm" },
     books: [
-      { title: "The Condition of the Working Class in England", isbn: "9781421969671" },
-      { title: "Socialism: Utopian and Scientific", isbn: "9781520480282" },
-      { title: "The Origin of the Family, Private Property and the State", isbn: "9781508760412" }
+      { title: "The Condition of the Working Class in England", isbn: "9781406525151" },
+      { title: "Socialism: Utopian and Scientific", isbn: "9781544964966" },
+      { title: "The Origin of the Family, Private Property and the State", isbn: "9781541015364" }
     ],
     name: "Friedrich Engels",
     school: "Marxism · Co-founder",
@@ -97,7 +97,7 @@ window.ENTRIES = [
     archive: { label: "Bakunin Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/bakunin/index.htm" },
     books: [
       { title: "God and the State", isbn: "9781511534390" },
-      { title: "Statism and Anarchy", isbn: "9780521361828" }
+      { title: "Statism and Anarchy", isbn: "9780521369732" }
     ],
     name: "Mikhail Bakunin",
     school: "Collectivist Anarchism",
@@ -120,7 +120,7 @@ window.ENTRIES = [
     archive: { label: "Bernstein Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/bernstein/index.htm" },
     books: [
       { title: "The Preconditions of Socialism", isbn: "9780521391214" },
-      { title: "Evolutionary Socialism", isbn: "9780805200119" }
+      { title: "Evolutionary Socialism", isbn: "9780359733361" }
     ],
     name: "Eduard Bernstein",
     school: "Revisionism · Reformist Social Democracy",
@@ -142,9 +142,9 @@ window.ENTRIES = [
     quote: "Without revolutionary theory there can be no revolutionary movement.",
     archive: { label: "Lenin Internet Archive (Marxists.org)", url: "https://www.marxists.org/archive/lenin/index.htm" },
     books: [
-      { title: "What Is to Be Done?", isbn: "9781548277574" },
-      { title: "The State and Revolution", isbn: "9781721843664" },
-      { title: "Imperialism, the Highest Stage of Capitalism", isbn: "9787119019635" }
+      { title: "What Is to Be Done?", isbn: "9781900007924" },
+      { title: "The State and Revolution", isbn: "9781637525401" },
+      { title: "Imperialism, the Highest Stage of Capitalism", isbn: "9781726312653" }
     ],
     name: "Vladimir Lenin",
     school: "Marxism–Leninism · Vanguardism",
@@ -168,7 +168,7 @@ window.ENTRIES = [
     books: [
       { title: "The Conquest of Bread", isbn: "9780521459907" },
       { title: "Mutual Aid: A Factor of Evolution", isbn: "9781729542262" },
-      { title: "Fields, Factories and Workshops", isbn: "9781313824408" }
+      { title: "Fields, Factories and Workshops", isbn: "9781614275930" }
     ],
     name: "Peter Kropotkin",
     school: "Anarchist Communism",
@@ -190,9 +190,9 @@ window.ENTRIES = [
     quote: "Social Democracy is a revolutionary party, but not a party that makes revolutions.",
     archive: { label: "Kautsky Archive (Marxists.org)", url: "https://www.marxists.org/archive/kautsky/index.htm" },
     books: [
-      { title: "The Road to Power", isbn: "9780391039551" },
-      { title: "The Class Struggle", isbn: "9780393005677" },
-      { title: "The Dictatorship of the Proletariat", isbn: "9780472060962" }
+      { title: "The Road to Power", isbn: "9780916695125" },
+      { title: "The Class Struggle" },
+      { title: "The Dictatorship of the Proletariat", isbn: "9781015489677" }
     ],
     name: "Karl Kautsky",
     school: "Orthodox Marxism · Second International",
@@ -214,8 +214,8 @@ window.ENTRIES = [
     quote: "Freedom is always the freedom of the one who thinks differently.",
     archive: { label: "Luxemburg Archive (Marxists.org)", url: "https://www.marxists.org/archive/luxemburg/index.htm" },
     books: [
-      { title: "Reform or Revolution", isbn: "9780906224496" },
-      { title: "The Mass Strike", isbn: "9780906224298" },
+      { title: "Reform or Revolution", isbn: "9780486447766" },
+      { title: "The Mass Strike", isbn: "9780979336331" },
       { title: "The Accumulation of Capital", isbn: "9781138834613" }
     ],
     name: "Rosa Luxemburg",
@@ -238,8 +238,8 @@ window.ENTRIES = [
     quote: "The most violent element in society is ignorance.",
     archive: { label: "Goldman at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/emma-goldman" },
     books: [
-      { title: "Anarchism and Other Essays", isbn: "9798554090998" },
-      { title: "Living My Life", isbn: "9780781281478" }
+      { title: "Anarchism and Other Essays", isbn: "9781609441135" },
+      { title: "Living My Life", isbn: "9781387871704" }
     ],
     name: "Emma Goldman",
     school: "Anarchism · Anarcha-Feminism",
@@ -263,7 +263,7 @@ window.ENTRIES = [
     books: [
       { title: "The Revolution Betrayed", isbn: "9781597407625" },
       { title: "History of the Russian Revolution", isbn: "9781931859455" },
-      { title: "The Permanent Revolution", isbn: "9781495497230" }
+      { title: "The Permanent Revolution", isbn: "9781015463653" }
     ],
     name: "Leon Trotsky",
     school: "Trotskyism · Permanent Revolution",
@@ -286,7 +286,7 @@ window.ENTRIES = [
     archive: { label: "Stalin Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/stalin/index.htm" },
     books: [
       { title: "Foundations of Leninism", isbn: "9780898752120" },
-      { title: "Marxism and the National Question", isbn: "9781490590653" }
+      { title: "Marxism and the National Question", isbn: "9781105460425" }
     ],
     name: "Joseph Stalin",
     school: "Marxism–Leninism · Stalinism",
@@ -308,7 +308,7 @@ window.ENTRIES = [
     quote: "Political power grows out of the barrel of a gun.",
     archive: { label: "Mao Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/mao/index.htm" },
     books: [
-      { title: "On Practice and On Contradiction", isbn: "9781961775350" },
+      { title: "On Practice and On Contradiction", isbn: "9781786633408" },
       { title: "On Guerrilla Warfare", isbn: "9781442166714" }
     ],
     name: "Mao Zedong",
@@ -332,7 +332,7 @@ window.ENTRIES = [
     archive: { label: "Pannekoek Archive (Marxists.org)", url: "https://www.marxists.org/archive/pannekoe/index.htm" },
     books: [
       { title: "Workers' Councils", isbn: "9781902593562" },
-      { title: "Lenin as Philosopher", isbn: "9780874626544" }
+      { title: "Lenin as Philosopher", isbn: "9780850361865" }
     ],
     name: "Anton Pannekoek",
     school: "Council Communism · Libertarian Marxism",
@@ -354,8 +354,8 @@ window.ENTRIES = [
     quote: "Core idea: Marxism supplies the critique of capitalism, anarchism the refusal of the state; a living socialism needs both.",
     archive: { label: "Guérin Archive (Marxists.org)", url: "https://www.marxists.org/history/etol/writers/guerin/index.htm" },
     books: [
-      { title: "Anarchism: From Theory to Practice", isbn: "9789350020463" },
-      { title: "No Gods No Masters: An Anthology of Anarchism", isbn: "9782707103895" }
+      { title: "Anarchism: From Theory to Practice", isbn: "9780853451754" },
+      { title: "No Gods No Masters: An Anthology of Anarchism", isbn: "9781904859253" }
     ],
     name: "Daniel Guérin",
     school: "Libertarian Marxism · Anarchism",
@@ -377,9 +377,9 @@ window.ENTRIES = [
     quote: "The very notion of the domination of nature by man stems from the very real domination of human by human.",
     archive: { label: "Bookchin at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/murray-bookchin" },
     books: [
-      { title: "Post-Scarcity Anarchism", isbn: "9780878670055" },
+      { title: "Post-Scarcity Anarchism", isbn: "9781904859062" },
       { title: "The Ecology of Freedom", isbn: "9781904859260" },
-      { title: "The Next Revolution", isbn: "9788889413913" }
+      { title: "The Next Revolution", isbn: "9781781685808" }
     ],
     name: "Murray Bookchin",
     school: "Social Ecology · Communalism",
@@ -401,7 +401,7 @@ window.ENTRIES = [
     quote: "Property is theft!",
     archive: { label: "Proudhon Archive (Marxists.org)", url: "https://www.marxists.org/reference/subject/economics/proudhon/index.htm" },
     books: [
-      { title: "What Is Property?", isbn: "9781502888815" },
+      { title: "What Is Property?", isbn: "9781512254150" },
       { title: "The Philosophy of Poverty" },
       { title: "The General Idea of the Revolution in the Nineteenth Century", isbn: "9780486163581" }
     ],
@@ -445,9 +445,9 @@ window.ENTRIES = [
     quote: "Core idea: Marxism is a complete and harmonious world-outlook, grounded in the dialectical and historical materialist method; the economic base shapes the entire political and ideological superstructure.",
     archive: { label: "Plekhanov Archive (Marxists.org)", url: "https://www.marxists.org/archive/plekhanov/index.htm" },
     books: [
-      { title: "The Development of the Monist View of History", isbn: "9780717803712" },
-      { title: "Fundamental Problems of Marxism", isbn: "9780717800742" },
-      { title: "The Role of the Individual in History", isbn: "9780853153788" }
+      { title: "The Development of the Monist View of History", isbn: "9781410203229" },
+      { title: "Fundamental Problems of Marxism" },
+      { title: "The Role of the Individual in History", isbn: "9781410209481" }
     ],
     name: "Georgi Plekhanov",
     school: "Orthodox Marxism",
@@ -468,8 +468,8 @@ window.ENTRIES = [
     quote: "The worker is the slave of capitalist society, the female worker is the slave of that slave.",
     archive: { label: "Connolly Archive (Marxists.org)", url: "https://www.marxists.org/archive/connolly/index.htm" },
     books: [
-      { title: "Labour in Irish History", isbn: "9780906224328" },
-      { title: "The Re-Conquest of Ireland", isbn: "9781595478993" }
+      { title: "Labour in Irish History", isbn: "9781015398641" },
+      { title: "The Re-Conquest of Ireland" }
     ],
     name: "James Connolly",
     school: "Revolutionary Socialism · Irish Republicanism",
@@ -490,8 +490,8 @@ window.ENTRIES = [
     quote: "Core idea: anarchists do not seek to emancipate the people; the people must emancipate themselves, through their own organizations and direct action.",
     archive: { label: "Malatesta at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/errico-malatesta" },
     books: [
-      { title: "Anarchy", isbn: "9780947608101" },
-      { title: "At the Cafe", isbn: "9788416553327" }
+      { title: "Anarchy", isbn: "9781512061338" },
+      { title: "At the Cafe" }
     ],
     name: "Errico Malatesta",
     school: "Anarchist Communism",
@@ -512,7 +512,7 @@ window.ENTRIES = [
     quote: "The old world is dying, and the new world struggles to be born: now is the time of monsters.",
     archive: { label: "Gramsci Archive (Marxists.org)", url: "https://www.marxists.org/archive/gramsci/index.htm" },
     books: [
-      { title: "Selections from the Prison Notebooks", isbn: "9780717802708" }
+      { title: "Selections from the Prison Notebooks", isbn: "9780521411431" }
     ],
     name: "Antonio Gramsci",
     school: "Marxism · Cultural Hegemony",
@@ -535,7 +535,7 @@ window.ENTRIES = [
     books: [
       { title: "The Workers' Opposition", isbn: "9781467968584" },
       { title: "Sexual Relations and the Class Struggle" },
-      { title: "A Great Love", isbn: "9780836939835" }
+      { title: "A Great Love", isbn: "9781466406711" }
     ],
     name: "Alexandra Kollontai",
     school: "Marxism · Revolutionary Feminism",
@@ -577,7 +577,7 @@ window.ENTRIES = [
     quote: "Core idea: human character is formed by environment, not by innate nature; transform the social conditions and you transform the person.",
     archive: { label: "Owen Archive (Marxists.org)", url: "https://www.marxists.org/reference/subject/economics/owen/index.htm" },
     books: [
-      { title: "A New View of Society", isbn: "9780460007993" }
+      { title: "A New View of Society", isbn: "9781015990357" }
     ],
     name: "Robert Owen",
     school: "Utopian Socialism · Cooperative Movement",
@@ -641,7 +641,7 @@ window.ENTRIES = [
     archive: { label: "Fanon Archive (Marxists.org)", url: "" },
     books: [
       { title: "The Wretched of the Earth", isbn: "9781777257361" },
-      { title: "Black Skin, White Masks", isbn: "9782020006019" }
+      { title: "Black Skin, White Masks" }
     ],
     name: "Frantz Fanon",
     school: "Anti-Colonialism · Revolutionary Humanism",
@@ -683,8 +683,8 @@ window.ENTRIES = [
     quote: "A comfortable, smooth, reasonable, democratic unfreedom prevails in advanced industrial civilization.",
     archive: { label: "Marcuse Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/marcuse/index.htm" },
     books: [
-      { title: "One-Dimensional Man", isbn: "9780744800401" },
-      { title: "Eros and Civilization", isbn: "9783518011584" }
+      { title: "One-Dimensional Man", isbn: "9780415289771" },
+      { title: "Eros and Civilization", isbn: "9781138137950" }
     ],
     name: "Herbert Marcuse",
     school: "Frankfurt School · Critical Theory",
@@ -706,7 +706,7 @@ window.ENTRIES = [
     archive: { label: "Du Bois Reference Archive (Marxists.org)", url: "" },
     books: [
       { title: "The Souls of Black Folk", isbn: "9781535103305" },
-      { title: "Black Reconstruction in America", isbn: "9780268021658" }
+      { title: "Black Reconstruction in America", isbn: "9780199385652" }
     ],
     name: "W. E. B. Du Bois",
     school: "Pan-Africanism · Marxism",
@@ -727,8 +727,8 @@ window.ENTRIES = [
     quote: "Core idea: government, even at its best, is an evil that stifles human reason; society can be organized through rational discourse and voluntary association alone.",
     archive: { label: "Godwin at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/william-godwin" },
     books: [
-      { title: "An Enquiry Concerning Political Justice", isbn: "9780873951753" },
-      { title: "Caleb Williams", isbn: "9780192816214" }
+      { title: "An Enquiry Concerning Political Justice", isbn: "9780199642625" },
+      { title: "Caleb Williams", isbn: "9781604245554" }
     ],
     name: "William Godwin",
     school: "Philosophical Anarchism",
@@ -749,7 +749,7 @@ window.ENTRIES = [
     quote: "Core idea: anarchism without adjectives: the various schools of anarchism should cooperate rather than quarrel over blueprints; what matters is the shared commitment to liberty, with each person free to pursue their own vision.",
     archive: { label: "De Cleyre at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/voltairine-de-cleyre" },
     books: [
-      { title: "Selected Works of Voltairine de Cleyre", isbn: "9781976008382" }
+      { title: "Selected Works of Voltairine de Cleyre", isbn: "9780548186121" }
     ],
     name: "Voltairine de Cleyre",
     school: "Anarcha-Feminism · Anarchism Without Adjectives",
@@ -770,7 +770,7 @@ window.ENTRIES = [
     quote: "We do not wish that socialism in America be a tracing or a copy. It must be a heroic creation.",
     archive: { label: "Mariátegui Archive (Marxists.org)", url: "https://www.marxists.org/archive/mariateg/index.htm" },
     books: [
-      { title: "Seven Interpretive Essays on Peruvian Reality", isbn: "9780292701151" }
+      { title: "Seven Interpretive Essays on Peruvian Reality" }
     ],
     name: "José Carlos Mariátegui",
     school: "Latin American Marxism · Indigenous Socialism",
@@ -791,7 +791,7 @@ window.ENTRIES = [
     quote: "Tell no lies, claim no easy victories.",
     archive: { label: "Cabral Archive (Marxists.org)", url: "" },
     books: [
-      { title: "Unity and Struggle", isbn: "9781599070360" },
+      { title: "Unity and Struggle", isbn: "9780853456254" },
       { title: "Return to the Source", isbn: "9781685900052" }
     ],
     name: "Amílcar Cabral",
@@ -814,7 +814,7 @@ window.ENTRIES = [
     archive: { label: "James Archive (Marxists.org)", url: "https://www.marxists.org/archive/james-clr/index.htm" },
     books: [
       { title: "The Black Jacobins", isbn: "9780679724674" },
-      { title: "Beyond a Boundary", isbn: "9781446496657" }
+      { title: "Beyond a Boundary", isbn: "9780822355632" }
     ],
     name: "C. L. R. James",
     tag: "C. L. R. James",
@@ -836,8 +836,8 @@ window.ENTRIES = [
     quote: "I am no longer accepting the things I cannot change. I am changing the things I cannot accept.",
     archive: { label: "Davis Reference Archive (Marxists.org)", url: "" },
     books: [
-      { title: "Women, Race and Class", isbn: "9780241408414" },
-      { title: "Are Prisons Obsolete?", isbn: "9788833893273" }
+      { title: "Women, Race and Class", isbn: "9780307798497" },
+      { title: "Are Prisons Obsolete?", isbn: "9781583225813" }
     ],
     name: "Angela Davis",
     school: "Marxist Feminism · Prison Abolition",
@@ -879,7 +879,7 @@ window.ENTRIES = [
     quote: "Core idea: the party form itself is a bourgeois inheritance that reproduces class division between leaders and led; the workers' council is the authentic organ of proletarian self-emancipation.",
     archive: { label: "Rühle Archive (Marxists.org)", url: "https://www.marxists.org/archive/ruhle/index.htm" },
     books: [
-      { title: "Karl Marx: His Life and Work", isbn: "9780203807682" }
+      { title: "Karl Marx: His Life and Work", isbn: "9781453779422" }
     ],
     name: "Otto Rühle",
     school: "Council Communism",
@@ -900,8 +900,8 @@ window.ENTRIES = [
     quote: "Core idea: the revolution must be defended as a liberation, not merely as a new regime; the means prefigure the ends, and the revolution devours those who are not truly its children.",
     archive: { label: "Serge Archive (Marxists.org)", url: "https://www.marxists.org/archive/serge/index.htm" },
     books: [
-      { title: "Memoirs of a Revolutionary", isbn: "9780192810373" },
-      { title: "Year One of the Russian Revolution", isbn: "9780863161513" }
+      { title: "Memoirs of a Revolutionary", isbn: "9781590174517" },
+      { title: "Year One of the Russian Revolution", isbn: "9781608466092" }
     ],
     name: "Victor Serge",
     school: "Libertarian Bolshevism · Anti-Stalinism",
@@ -922,7 +922,7 @@ window.ENTRIES = [
     quote: "The main enemy is at home.",
     archive: { label: "Liebknecht Archive (Marxists.org)", url: "https://www.marxists.org/archive/liebknecht-k/index.htm" },
     books: [
-      { title: "Militarism", isbn: "9781410203687" }
+      { title: "Militarism", isbn: "9781551643410" }
     ],
     name: "Karl Liebknecht",
     school: "Revolutionary Marxism · Spartacism",
@@ -943,8 +943,8 @@ window.ENTRIES = [
     quote: "There is no right life in the wrong one.",
     archive: { label: "Adorno Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/adorno/index.htm" },
     books: [
-      { title: "Dialectic of Enlightenment", isbn: "9780826400932" },
-      { title: "Minima Moralia", isbn: "9780902308954" }
+      { title: "Dialectic of Enlightenment", isbn: "9780804736329" },
+      { title: "Minima Moralia", isbn: "9781788738538" }
     ],
     name: "Theodor W. Adorno",
     school: "Frankfurt School · Critical Theory",
@@ -966,7 +966,7 @@ window.ENTRIES = [
     archive: { label: "Benjamin Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/benjamin/index.htm" },
     books: [
       { title: "The Work of Art in the Age of Mechanical Reproduction", isbn: "9780359046393" },
-      { title: "Theses on the Philosophy of History", isbn: "9781473524446" }
+      { title: "Theses on the Philosophy of History", isbn: "9780547540658" }
     ],
     name: "Walter Benjamin",
     school: "Frankfurt School · Cultural Criticism",
@@ -987,8 +987,8 @@ window.ENTRIES = [
     quote: "Man's main task in life is to give birth to himself, to become what he potentially is.",
     archive: { label: "Fromm Archive (Marxists.org)", url: "" },
     books: [
-      { title: "Escape from Freedom", isbn: "9780380011674" },
-      { title: "The Sane Society", isbn: "9781306624077" }
+      { title: "Escape from Freedom", isbn: "9780805031492" },
+      { title: "The Sane Society", isbn: "9781480402515" }
     ],
     name: "Erich Fromm",
     school: "Humanist Marxism · Freudo-Marxism",
@@ -1031,7 +1031,7 @@ window.ENTRIES = [
     quote: "Core idea: capitalism was built on the expropriation of women's bodies and unpaid reproductive labor; the witch hunts were not medieval superstition but a rational campaign of terror to enforce the new gender order required by primitive accumulation.",
     archive: { label: "Federici Reference Archive (Marxists.org)", url: "" },
     books: [
-      { title: "Caliban and the Witch", isbn: "9780241532539" }
+      { title: "Caliban and the Witch", isbn: "9781570270598" }
     ],
     name: "Silvia Federici",
     school: "Marxist Feminism · Autonomism",
@@ -1052,7 +1052,7 @@ window.ENTRIES = [
     quote: "Man is condemned to be free; because once thrown into the world, he is responsible for everything he does.",
     archive: { label: "Sartre Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/sartre/index.htm" },
     books: [
-      { title: "Being and Nothingness", isbn: "9781973776659" },
+      { title: "Being and Nothingness" },
       { title: "Critique of Dialectical Reason", isbn: "9781859844854" }
     ],
     name: "Jean-Paul Sartre",
@@ -1118,7 +1118,7 @@ window.ENTRIES = [
     archive: { label: "Harvey Reference Archive (Marxists.org)", url: "" },
     books: [
       { title: "A Brief History of Neoliberalism", isbn: "9781799978015" },
-      { title: "The Limits to Capital", isbn: "9781859847145" }
+      { title: "The Limits to Capital", isbn: "9781844670956" }
     ],
     name: "David Harvey",
     school: "Marxist Geography · Spatial Theory",
@@ -1140,7 +1140,7 @@ window.ENTRIES = [
     archive: { label: "Poulantzas Reference Archive (Marxists.org)", url: "" },
     books: [
       { title: "State, Power, Socialism", isbn: "9781859842744" },
-      { title: "Political Power and Social Classes", isbn: "9780722073049" }
+      { title: "Political Power and Social Classes" }
     ],
     name: "Nicos Poulantzas",
     school: "Structural Marxism · State Theory",
@@ -1161,8 +1161,8 @@ window.ENTRIES = [
     quote: "The ultimate, hidden truth of the world is that it is something that we make, and could just as easily make differently.",
     archive: { label: "Graeber at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/david-graeber" },
     books: [
-      { title: "Debt: The First 5,000 Years", isbn: "9791020900593" },
-      { title: "The Dawn of Everything", isbn: "9791020924636" },
+      { title: "Debt: The First 5,000 Years", isbn: "9781612194202" },
+      { title: "The Dawn of Everything", isbn: "9786075694160" },
       { title: "Bullshit Jobs", isbn: "9781501143342" }
     ],
     name: "David Graeber",
@@ -1184,9 +1184,9 @@ window.ENTRIES = [
     quote: "If you do not want to talk about capitalism, then you had better keep quiet about fascism.",
     archive: { label: "Horkheimer Reference Archive (Marxists.org)", url: "https://www.marxists.org/reference/archive/horkheimer/index.htm" },
     books: [
-      { title: "Dialectic of Enlightenment", isbn: "9780826400932" },
+      { title: "Dialectic of Enlightenment" },
       { title: "Eclipse of Reason", isbn: "9781443730419" },
-      { title: "Critical Theory: Selected Essays", isbn: "9781441172549" }
+      { title: "Critical Theory: Selected Essays", isbn: "9780826400833" }
     ],
     name: "Max Horkheimer",
     school: "Critical Theory · Frankfurt School",
@@ -1208,8 +1208,8 @@ window.ENTRIES = [
     quote: "Political rights do not originate in parliaments; they are forced upon them from without.",
     archive: { label: "Rocker at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/rudolf-rocker" },
     books: [
-      { title: "Anarcho-Syndicalism: Theory and Practice", isbn: "9782805900655" },
-      { title: "Nationalism and Culture", isbn: "9780877000761" }
+      { title: "Anarcho-Syndicalism: Theory and Practice", isbn: "9780745313870" },
+      { title: "Nationalism and Culture", isbn: "9781551640945" }
     ],
     name: "Rudolf Rocker",
     school: "Anarcho-Syndicalism",
@@ -1229,8 +1229,8 @@ window.ENTRIES = [
     quote: "If you assume that there is no hope, you guarantee that there will be no hope.",
     archive: { label: "Chomsky at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/noam-chomsky" },
     books: [
-      { title: "On Anarchism", isbn: "9781904859208" },
-      { title: "Understanding Power", isbn: "9780099466062" },
+      { title: "On Anarchism", isbn: "9781595589101" },
+      { title: "Understanding Power", isbn: "9781565847033" },
       { title: "Manufacturing Consent", isbn: "9780099533115" }
     ],
     name: "Noam Chomsky",
@@ -1251,8 +1251,8 @@ window.ENTRIES = [
     quote: "Core idea: states make society 'legible' in order to control it, and much human freedom survives in the everyday practices that resist that legibility.",
     archive: { label: "James C. Scott", url: "" },
     books: [
-      { title: "Seeing Like a State", isbn: "9781281729132" },
-      { title: "The Art of Not Being Governed", isbn: "9781282352643" },
+      { title: "Seeing Like a State", isbn: "9780300246759" },
+      { title: "The Art of Not Being Governed", isbn: "9780300169171" },
       { title: "Two Cheers for Anarchism", isbn: "9780691161037" }
     ],
     name: "James C. Scott",
@@ -1273,8 +1273,8 @@ window.ENTRIES = [
     quote: "The state is a relationship between human beings; we destroy it by contracting other relationships, by behaving differently toward one another.",
     archive: { label: "Landauer at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/gustav-landauer" },
     books: [
-      { title: "For Socialism", isbn: "9780914386117" },
-      { title: "Revolution and Other Writings", isbn: "9780850366716" }
+      { title: "For Socialism", isbn: "9781547120147" },
+      { title: "Revolution and Other Writings", isbn: "9781604864137" }
     ],
     name: "Gustav Landauer",
     school: "Communitarian Anarchism",
@@ -1314,7 +1314,7 @@ window.ENTRIES = [
     quote: "An anarchist society, a society which organises itself without authority, is always in existence, like a seed beneath the snow.",
     archive: { label: "Ward at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/colin-ward" },
     books: [
-      { title: "Anarchy in Action", isbn: "9780900384202" },
+      { title: "Anarchy in Action", isbn: "9781629632384" },
       { title: "Talking Anarchy", isbn: "9781604868128" }
     ],
     name: "Colin Ward",
@@ -1336,7 +1336,7 @@ window.ENTRIES = [
     archive: { label: "Berkman at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/alexander-berkman" },
     books: [
       { title: "Prison Memoirs of an Anarchist", isbn: "9781984292698" },
-      { title: "What Is Anarchism?", isbn: "9780486228396" }
+      { title: "What Is Anarchism?", isbn: "9780948984112" }
     ],
     name: "Alexander Berkman",
     school: "Anarchist Communism",
@@ -1357,7 +1357,7 @@ window.ENTRIES = [
     quote: "Never be deceived that the rich will permit you to vote away their wealth.",
     archive: { label: "Parsons at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/lucy-e-parsons" },
     books: [
-      { title: "Lucy Parsons: Freedom, Equality, and Solidarity", isbn: "9780882863009" }
+      { title: "Lucy Parsons: Freedom, Equality, and Solidarity" }
     ],
     name: "Lucy Parsons",
     school: "Anarcho-Communism · Labor Anarchism",
@@ -1377,8 +1377,8 @@ window.ENTRIES = [
     quote: "Core idea: the woman is the proletarian of the proletarian himself; there is no emancipation of the workers without the emancipation of women.",
     archive: { label: "Flora Tristan Reference Archive", url: "" },
     books: [
-      { title: "The Workers' Union", isbn: "9780252009211" },
-      { title: "Peregrinations of a Pariah", isbn: "9780807070277" }
+      { title: "The Workers' Union", isbn: "9780252075292" },
+      { title: "Peregrinations of a Pariah", isbn: "9782911571275" }
     ],
     name: "Flora Tristan",
     school: "Utopian Socialism · Socialist Feminism",
@@ -1398,7 +1398,7 @@ window.ENTRIES = [
     quote: "The liberation of women, like that of the whole human race, will be the work of the emancipation of labour from capital.",
     archive: { label: "Clara Zetkin Internet Archive (Marxists.org)", url: "https://www.marxists.org/archive/zetkin/index.htm" },
     books: [
-      { title: "Selected Writings", isbn: "9780717806119" },
+      { title: "Selected Writings", isbn: "9781608463909" },
       { title: "Fighting Fascism: How to Struggle and How to Win", isbn: "9781608468522" }
     ],
     name: "Clara Zetkin",
@@ -1419,7 +1419,7 @@ window.ENTRIES = [
     quote: "I am going to fight capitalism even if it kills me. It is wrong that people like me should be comfortable when other people are starving.",
     archive: { label: "Sylvia Pankhurst Archive (Marxists.org)", url: "https://www.marxists.org/archive/pankhurst-sylvia/index.htm" },
     books: [
-      { title: "The Suffragette Movement", isbn: "9780860680260" },
+      { title: "The Suffragette Movement", isbn: "9781446514184" },
       { title: "Soviet Russia As I Saw It" }
     ],
     name: "Sylvia Pankhurst",
@@ -1440,8 +1440,8 @@ window.ENTRIES = [
     quote: "One is not born, but rather becomes, a woman.",
     archive: { label: "Simone de Beauvoir Reference Archive", url: "" },
     books: [
-      { title: "The Second Sex", isbn: "9789001322540" },
-      { title: "The Ethics of Ambiguity", isbn: "9781538030349" }
+      { title: "The Second Sex", isbn: "9782070323524" },
+      { title: "The Ethics of Ambiguity", isbn: "9781480442801" }
     ],
     name: "Simone de Beauvoir",
     school: "Existentialist Feminism · Marxism",
@@ -1483,8 +1483,8 @@ window.ENTRIES = [
     quote: "Core idea: the unwaged housework of women is the hidden foundation of capitalist production; 'wages for housework' names that exploitation and demands its end.",
     archive: { label: "Selma James Reference Archive", url: "" },
     books: [
-      { title: "The Power of Women and the Subversion of the Community", isbn: "9780950270241" },
-      { title: "Sex, Race and Class", isbn: "9780950270272" }
+      { title: "The Power of Women and the Subversion of the Community" },
+      { title: "Sex, Race and Class", isbn: "9781604864540" }
     ],
     name: "Selma James",
     tag: "S. James",
@@ -1505,8 +1505,8 @@ window.ENTRIES = [
     quote: "The master's tools will never dismantle the master's house.",
     archive: { label: "Audre Lorde Reference Archive", url: "" },
     books: [
-      { title: "Sister Outsider", isbn: "9780895941428" },
-      { title: "Zami: A New Spelling of My Name", isbn: "9780241351086" }
+      { title: "Sister Outsider", isbn: "9781799984467" },
+      { title: "Zami: A New Spelling of My Name", isbn: "9780895941220" }
     ],
     name: "Audre Lorde",
     school: "Black Feminism · Queer Theory",
@@ -1526,8 +1526,8 @@ window.ENTRIES = [
     quote: "Core idea: capitalist accumulation rests on the colonisation of women, nature, and the global South, all treated as free resources to be exploited.",
     archive: { label: "Maria Mies Reference Archive", url: "" },
     books: [
-      { title: "Patriarchy and Accumulation on a World Scale", isbn: "9781856497350" },
-      { title: "Ecofeminism", isbn: "9781856491556" }
+      { title: "Patriarchy and Accumulation on a World Scale", isbn: "9781350348189" },
+      { title: "Ecofeminism", isbn: "9781350379886" }
     ],
     name: "Maria Mies",
     school: "Ecofeminism · Marxist Feminism",
@@ -1547,9 +1547,9 @@ window.ENTRIES = [
     quote: "Feminism is a movement to end sexism, sexist exploitation, and oppression.",
     archive: { label: "bell hooks Reference Archive", url: "" },
     books: [
-      { title: "Ain't I a Woman: Black Women and Feminism", isbn: "9781317588610" },
-      { title: "Feminism Is for Everybody", isbn: "9788416946211" },
-      { title: "Where We Stand: Class Matters", isbn: "9781135956646" }
+      { title: "Ain't I a Woman: Black Women and Feminism", isbn: "9781138821514" },
+      { title: "Feminism Is for Everybody", isbn: "9781138821620" },
+      { title: "Where We Stand: Class Matters", isbn: "9780415929134" }
     ],
     name: "bell hooks",
     school: "Black Feminism · Intersectionality",
@@ -1590,8 +1590,8 @@ window.ENTRIES = [
     quote: "Core idea: ideology is not a false picture we can simply see through; we keep obeying it even when we know better, because it structures our desire itself.",
     archive: { label: "Slavoj Žižek Reference Archive", url: "" },
     books: [
-      { title: "The Sublime Object of Ideology", isbn: "9788189059132" },
-      { title: "First as Tragedy, Then as Farce", isbn: "9781844674282" },
+      { title: "The Sublime Object of Ideology", isbn: "9781844673001" },
+      { title: "First as Tragedy, Then as Farce", isbn: "9781786635938" },
       { title: "Living in the End Times", isbn: "9781844677023" }
     ],
     name: "Slavoj Žižek",
@@ -1614,7 +1614,7 @@ window.ENTRIES = [
     books: [
       { title: "No Shortcuts: Organizing for Power in the New Gilded Age", isbn: "9780190868659" },
       { title: "A Collective Bargain: Unions, Organizing, and the Fight for Democracy", isbn: "9780062908599" },
-      { title: "Raising Expectations (and Raising Hell)", isbn: "9781844678853" }
+      { title: "Raising Expectations (and Raising Hell)", isbn: "9781781683156" }
     ],
     name: "Jane McAlevey",
     school: "Labor Organizing · Rank-and-File Strategy",
@@ -1654,7 +1654,7 @@ window.ENTRIES = [
     quote: "A good organizer is a social arsonist who goes around setting people on fire.",
     archive: { label: "Fred Ross Reference Archive", url: "" },
     books: [
-      { title: "Conquering Goliath: Cesar Chavez at the Beginning", isbn: "9780962529801" },
+      { title: "Conquering Goliath: Cesar Chavez at the Beginning" },
       { title: "Axioms for Organizers" }
     ],
     name: "Fred Ross",
