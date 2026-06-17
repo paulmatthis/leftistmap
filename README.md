@@ -26,7 +26,8 @@ maintaining the data, not for viewing the map.
   lightweight per-card index: name, school, dates, lineage, quote, archive, books, orgs).
 - `entries/<id>.js`: one file per entry holding the heavier modal content (the summary
   HTML, sources, and optional further reading). Loaded on demand when a card is opened.
-- `img/<id>.png|jpg`: a localized portrait per entry.
+- `img/<id>.png|jpg|webp`: a localized portrait per entry (cards fall back to initials if
+  the image is missing).
 - `tools/`: Node maintenance scripts (image fetch, book ISBN lookup, link checking).
 - `HANDOFF.md`: the detailed contributor guide and editorial policy.
 
@@ -46,9 +47,10 @@ Each entry is one object in `window.ENTRIES` (in `data.js`). The important field
   empty.
 - `quote`, `archive`, `books`: the signature quote, the collected-works archive link, and
   one to three notable works (Bookshop links are built from the ISBNs).
-- `center`: set `true` on exactly one entry (Marx) to anchor it on the centre axis.
-- `pinNear`: id of a partner this card should sit beside (Engels uses this to stay next
-  to Marx).
+
+The fields `center`, `pinNear`, `row`, and `lane` are vestigial. Earlier layouts used them;
+the current zigzag layout ignores them. Existing ones are harmless and left in place, but
+new entries do not need them.
 
 The matching content file looks like:
 
@@ -58,17 +60,15 @@ window.LM_CONTENT["marx"] = { summary: "<p>...</p>", sources: [...], reading: [.
 
 ## How the layout works
 
-`app.js` arranges the cards with a deterministic layered-genealogy algorithm (no physics,
-no manual coordinates):
+`app.js` arranges the cards in a deterministic zigzag grid (no physics, no manual
+coordinates):
 
-1. Cards are sorted by `yearSort` and split into evenly sized horizontal **bands** by era,
-   earliest at the top.
-2. Within each band, every card is pulled toward the average horizontal position of its
-   parents and children (a barycentre relaxation), so lineages branch into a readable tree
-   rather than a flat list.
-3. Marx and Engels straddle the centre axis; every other band is centred too.
-4. A per-band spacing and rail keep the whole map inside the visible width, so nothing is
-   ever cut off and it scrolls vertically.
+1. Cards are sorted by `yearSort`, earliest at the top.
+2. The sequence is sliced into rows of a fixed count computed from the viewport width
+   (responsive), then each row is evenly spaced and centred on the axis.
+3. Even rows shift slightly left and odd rows slightly right, so the connectors between
+   rows stay angled instead of stacking into right angles.
+4. Rows stack vertically using real card heights, and the map scrolls vertically.
 
 Because positions are computed rather than simulated, the same data always produces the
 same arrangement, with no overlaps and no width blow-ups. It re-runs on window resize.
