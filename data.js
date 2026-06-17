@@ -35,7 +35,8 @@ window.ORGS = {
   "second-intl": { label: "Second International (1889–1916)", mono: "II", color: "#42528c" },
   "third-intl":  { label: "Third International / Comintern (1919–1943)", mono: "★", color: "#9a3324" },
   "fourth-intl": { label: "Fourth International (1938– )", mono: "IV", color: "#7a3e86" },
-  "frankfurt":   { label: "Frankfurt School (Institute for Social Research)", mono: "FS", color: "#586b7a" }
+  "frankfurt":   { label: "Frankfurt School (Institute for Social Research)", mono: "FS", color: "#586b7a" },
+  "cio":         { label: "Congress of Industrial Organizations (CIO, 1935–1955)", mono: "CIO", color: "#9c6b2e" }
 };
 
 window.ENTRIES = [
@@ -1618,11 +1619,52 @@ window.ENTRIES = [
     years: "1964–2024",
     yearSort: 2016,
     era: "Contemporary organizing",
-    parents: ["luxemburg", "gramsci"],
+    parents: ["luxemburg", "mazzocchi", "ross"],
     thumb: "img/mcalevey.jpg",
     thumbPos: "center 20%",
     initials: "JM",
     preview:
       "American labor organizer and scholar who insisted there are 'no shortcuts' to building worker power: only mass, worker-led organizing and the supermajority strike. Her work revived the rank-and-file tradition for a new generation of unionists."
+  },
+  {
+    id: "mazzocchi",
+    orgs: ["cio"],
+    quote: "When you build a big movement from down below, regardless of who's in the White House, you can bring about change.",
+    archive: { label: "Tony Mazzocchi Reference Archive", url: "" },
+    books: [
+      { title: "The Man Who Hated Work and Loved Labor: The Life and Times of Tony Mazzocchi" }
+    ],
+    name: "Tony Mazzocchi",
+    school: "Labor Organizing · Just Transition",
+    years: "1926–2002",
+    yearSort: 1975,
+    era: "Postwar labor militancy",
+    parents: ["luxemburg", "gramsci"],
+    thumb: "wiki:Tony_Mazzocchi",
+    thumbPos: "center 20%",
+    initials: "TM",
+    preview:
+      "American labor leader of the Oil, Chemical and Atomic Workers, a driving force behind the 1970 OSHA Act. He coined the 'just transition' for workers displaced by environmental change and founded an independent Labor Party."
+  },
+  {
+    id: "ross",
+    orgs: [],
+    quote: "A good organizer is a social arsonist who goes around setting people on fire.",
+    archive: { label: "Fred Ross Reference Archive", url: "" },
+    books: [
+      { title: "Conquering Goliath: Cesar Chavez at the Beginning" },
+      { title: "Axioms for Organizers" }
+    ],
+    name: "Fred Ross",
+    school: "Community Organizing · House Meetings",
+    years: "1910–1992",
+    yearSort: 1955,
+    era: "Postwar community organizing",
+    parents: [],
+    thumb: "wiki:Fred_Ross_(community_organizer)",
+    thumbPos: "center 20%",
+    initials: "FR",
+    preview:
+      "American community organizer who built the Community Service Organization, developed the 'house meeting' method, and trained a generation of organizers, including Cesar Chavez and Dolores Huerta."
   }
 ];
