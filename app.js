@@ -131,7 +131,7 @@
     }
 
     card.addEventListener("click", function () { openModal(e.id); });
-    card.addEventListener("mouseenter", function (ev) { requestPreview(e, ev.currentTarget); });
+    card.addEventListener("mouseenter", function (ev) { onCardEnter(e, ev.currentTarget); });
     card.addEventListener("mouseleave", function () { cancelPreviewShow(); scheduleHidePreview(); });
     card.addEventListener("focus", function () { openPreview(e, card); });
     card.addEventListener("blur", scheduleHidePreview);
@@ -176,19 +176,36 @@
   // The preview is interactive (it holds clickable connection tags), so it uses
   // a small grace delay: it stays open while the pointer or focus is over the
   // card OR the preview itself, and only hides shortly after leaving both.
-  var previewId = null;
+  var previewId = null;        // card whose BOX is currently shown (null when hidden)
+  var litId = null;            // card whose connectors are currently lit (hover-immediate)
   var previewHideTimer = null;
   var previewShowTimer = null;
   var PREVIEW_SHOW_DELAY = 280; // hover-intent: linger this long before the box appears
 
-  // Mouse path only: wait out a short linger before showing the box, so sweeping
-  // the pointer across many cards never makes it pop. A new card or a card-leave
-  // cancels a still-pending request. This gates ONLY the appear step; once the
-  // box is open the hide logic below is in sole control and is untouched by this.
-  function requestPreview(e, anchor) {
+  // Connector highlighting follows the pointer with NO delay: lighting one card
+  // extinguishes the previous, so a swept neighbour is never left stranded lit.
+  function lightCard(id) {
+    if (litId === id) return;
+    if (litId) litConnectors(litId, false);
+    litConnectors(id, true);
+    litId = id;
+  }
+
+  // Mouse enters a card. Connectors light immediately; only the BOX waits out a
+  // linger (so sweeping the pointer across cards never makes the box pop). If a
+  // box for some OTHER card is still open, dismiss it now (its card is no longer
+  // hovered); the new card's box appears only after the linger.
+  function onCardEnter(e, anchor) {
     if (mqMobile.matches || !e.preview) return;
+    clearTimeout(previewHideTimer); // a pending leave-hide is moot, we are on a card again
+    lightCard(e.id);
+    if (!previewEl.hidden && previewId !== e.id) { previewEl.hidden = true; previewId = null; }
+    requestPreview(e, anchor);
+  }
+  // Box-only: schedule (or re-show) the preview after the linger. Gates ONLY the
+  // appear step; the connectors are already lit and the hide logic is untouched.
+  function requestPreview(e, anchor) {
     clearTimeout(previewShowTimer);
-    // Already showing this card (e.g. re-enter from its own preview box): no wait.
     if (previewId === e.id && !previewEl.hidden) { openPreview(e, anchor); return; }
     previewShowTimer = setTimeout(function () { openPreview(e, anchor); }, PREVIEW_SHOW_DELAY);
   }
@@ -198,10 +215,7 @@
     if (mqMobile.matches || !e.preview) return;
     clearTimeout(previewHideTimer);
     clearTimeout(previewShowTimer);
-    // Extinguish the previously highlighted card before lighting the new one,
-    // so connectors never get stranded lit when the pointer moves card->card
-    // (e.g. grazing a neighbour on the way out of the preview box).
-    if (previewId && previewId !== e.id) litConnectors(previewId, false);
+    lightCard(e.id); // ensure lit (covers the keyboard-focus path, which skips onCardEnter)
     previewId = e.id;
     previewEl.innerHTML = "";
     var close = document.createElement("button");
@@ -218,7 +232,6 @@
     cc.className = "conn-block";
     if (renderConnTags(cc, e)) previewEl.appendChild(cc);
     previewEl.hidden = false;
-    litConnectors(e.id, true);
     var r = anchor.getBoundingClientRect();
     var pos = computePreviewPos(r, previewEl.offsetWidth, previewEl.offsetHeight,
       window.innerWidth, window.innerHeight, 14);
@@ -248,8 +261,8 @@
   function hidePreview() {
     clearTimeout(previewHideTimer);
     previewEl.hidden = true;
-    if (previewId) litConnectors(previewId, false);
     previewId = null;
+    if (litId) { litConnectors(litId, false); litId = null; }
   }
   function scheduleHidePreview() {
     clearTimeout(previewHideTimer);
