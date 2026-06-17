@@ -36,7 +36,7 @@ window.ORGS = {
   "third-intl":  { label: "Third International / Comintern (1919–1943)", mono: "★", color: "#9a3324" },
   "fourth-intl": { label: "Fourth International (1938– )", mono: "IV", color: "#7a3e86" },
   "frankfurt":   { label: "Frankfurt School (Institute for Social Research)", mono: "FS", color: "#586b7a" },
-  "cio":         { label: "Congress of Industrial Organizations (CIO, 1935–1955)", mono: "CIO", color: "#9c6b2e" }
+  "industrial":  { label: "Industrial Unionism (IWW / CIO tradition)", mono: "IU", color: "#9c6b2e" }
 };
 
 window.ENTRIES = [
@@ -464,7 +464,7 @@ window.ENTRIES = [
   },
   {
     id: "connolly",
-    orgs: ["second-intl"],
+    orgs: ["second-intl", "industrial"],
     quote: "The worker is the slave of capitalist society, the female worker is the slave of that slave.",
     archive: { label: "Connolly Archive (Marxists.org)", url: "https://www.marxists.org/archive/connolly/index.htm" },
     books: [
@@ -1352,7 +1352,7 @@ window.ENTRIES = [
   },
   {
     id: "parsons",
-    orgs: ["anti-auth"],
+    orgs: ["anti-auth", "industrial"],
     quote: "Never be deceived that the rich will permit you to vote away their wealth.",
     archive: { label: "Parsons at The Anarchist Library", url: "https://theanarchistlibrary.org/category/author/lucy-e-parsons" },
     books: [
@@ -1606,7 +1606,7 @@ window.ENTRIES = [
   },
   {
     id: "mcalevey",
-    orgs: [],
+    orgs: ["industrial"],
     quote: "Core idea: there are no shortcuts to power. Unions win only by organising the vast majority of workers themselves, testing their strength, and building toward the supermajority strike.",
     archive: { label: "Jane McAlevey Reference Archive", url: "" },
     books: [
@@ -1628,7 +1628,7 @@ window.ENTRIES = [
   },
   {
     id: "mazzocchi",
-    orgs: ["cio"],
+    orgs: ["industrial"],
     quote: "When you build a big movement from down below, regardless of who's in the White House, you can bring about change.",
     archive: { label: "Tony Mazzocchi Reference Archive", url: "" },
     books: [
