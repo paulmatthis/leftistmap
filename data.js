@@ -817,6 +817,7 @@ window.ENTRIES = [
       { title: "Beyond a Boundary" }
     ],
     name: "C. L. R. James",
+    tag: "C. L. R. James",
     school: "Pan-Africanism · Libertarian Marxism",
     years: "1901–1989",
     yearSort: 1938,
@@ -1486,6 +1487,7 @@ window.ENTRIES = [
       { title: "Sex, Race and Class" }
     ],
     name: "Selma James",
+    tag: "S. James",
     school: "Marxist Feminism · Wages for Housework",
     years: "b. 1930",
     yearSort: 1968,

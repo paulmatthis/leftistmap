@@ -71,7 +71,7 @@
       b.type = "button";
       b.className = "conn-tag";
       b.dataset.id = cid;
-      b.textContent = shortName(t);
+      b.textContent = t.tag || shortName(t);   // tag overrides the surname (disambiguates e.g. the two Jameses)
       b.title = t.name;
       wrap.appendChild(b);
     });
