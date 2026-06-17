@@ -202,8 +202,8 @@ window.LM_CONTENT["kautsky"] = {
   verifiable, so avoid it.
 - `crossrefs` — OPTIONAL. Works THIS thinker wrote about (or in direct answer to) ANOTHER
   figure on the map: `{ about: "<entry-id>", label, url }`. `about` must be a real entry id.
-  The modal renders these under "In their own words: on fellow thinkers" with an "on <Name>"
-  tag, and the id makes them the raw material for the planned debate mode. Add the reciprocal
+  The modal renders these under "On fellow thinkers" with an "on <Name>" tag, and the id
+  makes them the raw material for the planned debate mode. Add the reciprocal
   where it exists (Lenin's reply to Kautsky on one card, Kautsky's original on the other).
   Prefer a primary full text on `marxists.org`/`theanarchistlibrary.org`. Co-authored works
   (e.g. the Manifesto) count and go on both authors' cards. Verify every URL (see below).
@@ -282,8 +282,8 @@ reintroduce physics or barycenter placement without an explicit ask.
 - Modal (`openModal`): header, quote, link buttons, lazy summary, then
   `#modal-connections` (same chips, click closes modal + jumps), then the sources footer.
   The footer builds "Sources & further reading" (Wikipedia + `reading`) and, when the entry
-  has `crossrefs`, a second "In their own words: on fellow thinkers" block, each link tagged
-  `on <Name>` (resolved from the `about` id via `byId`).
+  has `crossrefs`, a second "On fellow thinkers" block, each link tagged `on <Name>`
+  (resolved from the `about` id via `byId`).
 - `jumpToCard(id)` — used by search results AND connection chips. Scrolls the card to
   center and plays the `cardjump` highlight (hover-style lift + radiating red glow, ~1.5s)
   while lighting its connectors.

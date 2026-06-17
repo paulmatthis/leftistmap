@@ -391,7 +391,7 @@
       // raw material for the planned "debate" mode.
       var cr = data.crossrefs || [];
       if (cr.length) {
-        html += '<span class="src-label">In their own words: on fellow thinkers</span>' +
+        html += '<span class="src-label">On fellow thinkers</span>' +
           cr.map(function (s) {
             var who = byId[s.about] ? byId[s.about].name : null;
             var tag = who ? '<span class="src-on">on ' + esc(who) + "</span> " : "";

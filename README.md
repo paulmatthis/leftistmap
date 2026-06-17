@@ -56,7 +56,7 @@ new entries do not need them.
 The matching content file holds the modal text plus its citations: `sources` (incl.
 Wikipedia), optional `reading` (further reading, e.g. SEP), and optional `crossrefs`, which
 are works the thinker wrote about another figure on the map (`{ about: "<id>", label, url }`,
-shown as "In their own words: on fellow thinkers"). It looks like:
+shown as "On fellow thinkers"). It looks like:
 
 ```js
 window.LM_CONTENT["marx"] = { summary: "<p>...</p>", sources: [...], reading: [...], crossrefs: [...] };
