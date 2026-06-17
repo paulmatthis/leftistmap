@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Leftist Map</title>
+  <meta name="description" content="A branching timeline of leftist thinkers, schools of thought, and moments where theory met practice." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1>The Leftist Map</h1>
+      <p class="tagline">A branching timeline of leftist thinkers, schools of thought, and moments where theory met practice.</p>
+    </div>
+    <div class="header-actions">
+      <button id="search-toggle" class="icon-btn" type="button" aria-label="Search entries" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+      </button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <span class="theme-toggle__icon" aria-hidden="true">☾</span>
+      </button>
+
+      <div id="search-panel" class="search-panel" hidden>
+        <input id="search-input" class="search-input" type="text" placeholder="Search thinkers and schools..." autocomplete="off" aria-label="Search thinkers and schools" />
+        <ul id="search-results" class="search-results"></ul>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="timeline" class="timeline" aria-label="Timeline of leftist thinkers and schools">
+      <svg id="connectors" class="connectors" aria-hidden="true"></svg>
+      <!-- entries injected by app.js -->
+    </div>
+  </main>
+
+  <!-- Desktop hover / keyboard-focus preview -->
+  <div id="preview" class="preview" role="status" aria-live="polite" hidden></div>
+
+  <!-- Detail modal -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+      <button class="modal__close" data-close type="button" aria-label="Close">&times;</button>
+      <div class="modal__head">
+        <div class="modal__portrait portrait"><span class="thumb" id="modal-thumb"></span></div>
+        <div class="modal__headtext">
+          <h2 id="modal-name"></h2>
+          <p class="modal__meta"><span id="modal-school"></span> · <span id="modal-years"></span></p>
+          <div class="modal__orgs" id="modal-orgs"></div>
+        </div>
+      </div>
+      <blockquote class="modal__quote" id="modal-quote" hidden></blockquote>
+      <div class="modal__links" id="modal-links"></div>
+      <div class="modal__body" id="modal-summary"></div>
+      <div class="modal__sources" id="modal-sources"></div>
+    </div>
+  </div>
+
+  <button id="legend-toggle" class="icon-btn legend-toggle" type="button" aria-label="Key to the organization icons" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><line x1="11.5" y1="11.5" x2="21" y2="21"></line><line x1="17" y1="17" x2="20" y2="14"></line></svg>
+  </button>
+  <div id="legend-panel" class="legend-panel" hidden>
+    <h2 class="legend-panel__title">Organizations &amp; Internationals</h2>
+    <ul id="legend-list" class="legend-list"></ul>
+  </div>
+
+  <footer class="site-footer">
+      <p>Site by <a href="https://beacons.ai/paulnm" target="_blank" rel="noopener noreferrer">Paul Nabil Matthis</a> &copy; <script>document.write(new Date().getFullYear())</script>, with thanks to <a href="https://en.wikipedia.org/wiki/Free_and_open-source_software" target="_blank" rel="noopener noreferrer">FOSS</a> resources like the <a href="https://www.marxists.org/archive/index.htm" target="_blank" rel="noopener noreferrer">Marxists Internet Archive</a>, the <a href="https://theanarchistlibrary.org/stats/popular" target="_blank" rel="noopener noreferrer">Anarchist Library</a>, and <a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank" rel="noopener noreferrer">Wikipedia</a>.</p>
+    </footer>
+
+    <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

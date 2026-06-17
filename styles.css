@@ -1,0 +1,534 @@
+/* ============================================================
+   The Leftist Map: styles
+   Theming via [data-theme] on <html>. Dark is default.
+   No em-dashes anywhere, by standing instruction.
+   ============================================================ */
+
+:root {
+  --bg: #0e0f12;
+  --surface: #16181d;
+  --surface-2: #1d2027;
+  --text: #e7e8ec;
+  --text-dim: #9a9ca6;
+  --line: #2a2d36;
+  --accent: #e0463c;
+  --accent-soft: rgba(224, 70, 60, 0.16);
+
+  /* links: duller red on dark, with hover + visited */
+  --link: #c2554c;
+  --link-hover: #e07b71;
+  --link-visited: #a47ba8;
+
+  /* vintage bubble frame */
+  --frame: #9c8456;
+  --frame-faint: rgba(156, 132, 86, 0.45);
+
+  --connector: #3a3e49;
+  --shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
+  --radius: 14px;
+  --maxw: 1040px;
+  --spine-x: 40px;
+
+  /* Card styling is intentionally constant across themes: aged sepia
+     "photographs" that stay the same in dark and light mode. */
+  --card-bg: #dcc69c;
+  --card-ink: #34291b;
+  --card-sub: #6f5a3e;
+  --card-accent: #95331f;
+  --card-edge: rgba(80, 56, 28, 0.45);
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface-2: #efeee8;
+  --text: #1a1a1e;
+  --text-dim: #60626b;
+  --line: #dedcd4;
+  --accent: #c5362c;
+  --accent-soft: rgba(197, 54, 44, 0.10);
+
+  --link: #b23a2f;
+  --link-hover: #8f2b22;
+  --link-visited: #7a4f86;
+
+  --frame: #b39862;
+  --frame-faint: rgba(140, 116, 70, 0.40);
+
+  --connector: #cfccc1;
+  --shadow: 0 12px 34px rgba(40, 38, 34, 0.12);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ---------- Links (hover + visited, both themes) ---------- */
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+a:visited { color: var(--link-visited); }
+a:visited:hover { color: var(--link-hover); }
+
+main { overflow-x: auto; }
+
+/* ---------- Header ---------- */
+.site-header {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 46px 32px 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand h1 {
+  margin: 0;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 1.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.tagline {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  max-width: 54ch;
+}
+.header-actions { position: relative; display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+
+.theme-toggle,
+.icon-btn {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+.theme-toggle:hover { border-color: var(--accent); transform: rotate(-12deg); }
+.icon-btn:hover { border-color: var(--accent); }
+.theme-toggle:focus-visible,
+.icon-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* ---------- Search ---------- */
+.search-panel {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 300px;
+  max-width: 80vw;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 10px;
+  z-index: 90;
+}
+.search-input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+}
+.search-input:focus-visible { outline: none; border-color: var(--accent); }
+.search-results { list-style: none; margin: 8px 0 0; padding: 0; max-height: 320px; overflow-y: auto; }
+.search-results li { margin: 0; }
+.search-results .open {
+  width: auto;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.search-results .open:hover,
+.search-results .open:focus-visible { background: var(--surface-2); outline: none; }
+.search-results .r-name { font-weight: 600; font-size: 0.92rem; }
+.search-results .r-school { font-size: 0.76rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.03em; }
+.search-empty { padding: 8px 10px; color: var(--text-dim); font-size: 0.85rem; }
+
+/* Search results become a row: open (main) + jump-to-card (secondary). */
+.search-result { display: flex; align-items: stretch; gap: 2px; }
+.search-result .open { flex: 1 1 auto; }
+.search-result .jump {
+  flex: 0 0 auto;
+  width: 34px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.search-result .jump:hover,
+.search-result .jump:focus-visible { background: var(--surface-2); color: var(--accent); outline: none; }
+
+/* ---------- Org badges (cards + modal) ---------- */
+.org-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.card__orgs { position: absolute; top: 9px; right: 9px; display: flex; gap: 3px; z-index: 2; }
+.modal__orgs { display: flex; gap: 5px; margin-top: 9px; }
+
+/* ---------- Modal quote + link buttons ---------- */
+.modal__quote {
+  margin: 20px 0 0;
+  padding: 8px 0 8px 16px;
+  border-left: 3px solid var(--accent);
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.modal__quote[hidden] { display: none; }
+.modal__links { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; }
+/* Scoped to outrank the global a:visited / a:hover rules so the buttons
+   behave the same before and after they've been clicked. */
+.modal__links a.lm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.72rem;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--surface-2);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.modal__links a.lm-link:visited { color: var(--text); }
+.modal__links a.lm-link:hover,
+.modal__links a.lm-link:visited:hover,
+.modal__links a.lm-link:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  outline: none;
+}
+.lm-link__tag { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
+.modal__links a.lm-link:hover .lm-link__tag { color: var(--accent); }
+
+/* ---------- Legend (key) ---------- */
+.legend-toggle { position: fixed; left: 22px; bottom: 22px; z-index: 95; }
+.legend-panel {
+  position: fixed;
+  left: 22px;
+  bottom: 74px;
+  z-index: 95;
+  width: 300px;
+  max-width: 80vw;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+}
+.legend-panel[hidden] { display: none; }
+.legend-panel__title { margin: 0 0 10px; font-family: ui-serif, Georgia, serif; font-size: 0.95rem; font-weight: 600; }
+.legend-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.legend-list li { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--text-dim); }
+
+/* ---------- Jump-to-card highlight ---------- */
+.entry.flash .card { animation: cardflash 1.2s ease; }
+@keyframes cardflash {
+  0% { box-shadow: 0 0 0 0 var(--accent-soft); }
+  20% { box-shadow: 0 0 0 4px var(--accent), 0 14px 30px rgba(0, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+/* ---------- Timeline ---------- */
+.timeline {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px 24px 40px;
+  --lane-gap: 188px;   /* horizontal distance between lanes */
+  --row-gap: 180px;    /* vertical distance between rows */
+}
+
+.connectors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.connectors path {
+  fill: none;
+  stroke: var(--connector);
+  stroke-width: 2;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+}
+.connectors path.lit {
+  opacity: 1;
+  stroke: var(--text-dim);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 4px var(--text-dim));
+}
+
+/* ---------- Entry ---------- */
+/* Each entry is placed in 2D: vertical by its row, horizontal by its lane.
+   lane 0 is centre; negative is left, positive is right. The whole cloud
+   is recentred in JS so it sits in the middle regardless of lane spread. */
+.entry {
+  position: absolute;
+  z-index: 1;
+  /* +12px so the hover lift on the top row isn't clipped by the scroll box */
+  top: calc(var(--row, 0) * var(--row-gap) + 12px);
+  left: 50%;
+  width: 180px;
+  transform: translateX(calc(-50% + var(--lane, 0) * var(--lane-gap)));
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 14px 14px 12px;
+  border-radius: 12px;
+  color: var(--card-ink);
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  background-color: var(--card-bg);
+  background-image:
+  /*radial-gradient(circle at 22% 18%, rgba(124, 86, 44, 0.20), rgba(124, 86, 44, 0) 42%),
+    radial-gradient(circle at 82% 80%, rgba(96, 64, 32, 0.18), rgba(96, 64, 32, 0) 46%),
+    radial-gradient(circle at 64% 38%, rgba(150, 110, 60, 0.12), rgba(150, 110, 60, 0) 40%),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='120'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.32%200%200%200%200%200.22%200%200%200%200%200.10%200%200%200%200.16%200'/%3E%3C/filter%3E%3Crect%20width='120'%20height='120'%20filter='url(%23n)'/%3E%3C/svg%3E");*/
+  border: 1px solid var(--card-edge);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 226, 0.35),
+    inset 0 0 30px rgba(54, 36, 16, 0.40),
+    0 6px 18px rgba(0, 0, 0, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 226, 0.35),
+    inset 0 0 30px rgba(54, 36, 16, 0.40),
+    0 12px 26px rgba(0, 0, 0, 0.36);
+  outline: none;
+}
+.card:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 226, 0.35),
+    inset 0 0 30px rgba(54, 36, 16, 0.40),
+    0 12px 26px rgba(0, 0, 0, 0.36),
+    0 0 0 3px var(--accent-soft);
+}
+
+/* Victorian wire frame (thin double ring + beading + hanger loop) */
+.portrait {
+  flex: 0 0 auto;
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cg%20fill='none'%20stroke='%236b4f2a'%20stroke-width='1'%3E%3Ccircle%20cx='50'%20cy='50'%20r='47'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='38.5'%20stroke-width='0.7'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='43'%20stroke-width='2.3'%20stroke-linecap='round'%20stroke-dasharray='0.1%205'/%3E%3C/g%3E%3C/svg%3E");
+}
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #d9c39c;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #6b4f2a;
+  letter-spacing: 0.04em;
+  box-shadow: inset 0 0 0 1px rgba(107, 79, 42, 0.5);
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.card__text h3 {
+  margin: 0;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--card-ink);
+}
+.card__text .school {
+  margin: 4px 0 0;
+  color: var(--card-accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.card__text .years {
+  margin: 3px 0 0;
+  color: var(--card-sub);
+  font-size: 0.8rem;
+}
+
+.inline-preview {
+  display: none;
+  max-width: 320px;
+  margin: 14px auto 0;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* ---------- Hover/focus preview popover ---------- */
+.preview {
+  position: fixed;
+  z-index: 60;
+  max-width: 320px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+/* ---------- Modal (article-style margins kept here) ---------- */
+.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; }
+.modal[hidden] { display: none; }
+.modal__backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(2px); }
+.modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 30px 34px 26px;
+  box-shadow: var(--shadow);
+}
+.modal__close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.modal__close:hover { background: var(--accent-soft); color: var(--accent); }
+.modal__close:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.modal__head { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; padding-right: 30px; }
+.modal__portrait { width: 112px; height: 112px; }
+.modal__portrait .thumb { width: 82px; height: 82px; font-size: 1.4rem; }
+.modal__head { align-items: center; }
+.modal__headtext { min-width: 0; }
+.modal__head h2 {
+  margin: 0;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.modal__meta { margin: 5px 0 0; color: var(--text-dim); font-size: 0.88rem; }
+.modal__body { font-size: 0.96rem; line-height: 1.65; }
+.modal__body p { margin: 0 0 0.95em; }
+.modal__body .loading { color: var(--text-dim); font-style: italic; }
+.modal__sources {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 0.84rem;
+}
+.modal__sources .src-label {
+  flex-basis: 100%;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 1px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 32px 60px;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  .preview { display: none !important; }
+  .site-header { padding: 32px 20px 18px; }
+  .brand h1 { font-size: 1.55rem; }
+  /* On phones the tree collapses to a single centered column. */
+  /* On phones the cloud collapses to a single stacked column. */
+  .timeline { padding: 12px 16px 60px; height: auto !important; }
+  .connectors { display: none; }
+  .entry {
+    position: static;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 320px;
+    margin: 12px auto;
+  }
+  .entry.is-active .card { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4), 0 0 0 3px var(--accent-soft); }
+  .entry.is-active .inline-preview { display: block; }
+  .modal__dialog { padding: 24px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,5 @@
+node tools/fetch-images.mjs
+
+node tools/fetch-books.mjs
+
+node tools/check-links.mjs

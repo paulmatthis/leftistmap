@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Claude local (machine-specific) settings
+.claude/settings.local.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Editor / scratch
+*.log
+.cache/
