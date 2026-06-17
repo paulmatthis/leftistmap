@@ -82,10 +82,7 @@ critics condemn, and describe traditions and disputes rather than advocating. Se
 
 ## House style
 
-One hard rule worth repeating here: no em-dashes anywhere in the data or content files.
-Use a comma, period, colon, or parentheses instead. The en-dash is allowed only inside
-numeric year ranges (e.g. `1818–1883`). Verify by grepping `data.js` and `entries/` for
-the em-dash character (codepoint U+2014); it should appear nowhere.
+One hard rule worth repeating here: **No em-dashes. Ever.** The character `—` (U+2014) must never appear in any file besides instructions like this one on how to ensure it is not used. Wikipedia prose is full of them; when adapting text, replace each with a comma, period, colon, or parentheses. The en-dash `–` (U+2013) is allowed ONLY inside numeric year ranges (e.g. `1818–1883`). Verify with: `grep -rn $'—' data.js entries/` (must return nothing).
 
 ## Maintenance scripts (Node 18+)
 
