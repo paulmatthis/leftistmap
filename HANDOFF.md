@@ -24,6 +24,25 @@ last brought current at 74 entries.
   harmless `.fuse_hidden*` artifact; `rm -f .fuse_hidden*` before `git add` keeps the tree
   tidy.
 
+### Permissions & environment a fresh task needs
+
+There is exactly one permission that matters, and it may or may not persist across tasks,
+so assume you might have to grant it again:
+
+- **Cowork file-deletion permission for this folder.** This is the ONLY gate. Git cannot
+  function without it (it deletes its own `index.lock` and temp objects), and any `rm`
+  fails without it. It is requested automatically the first time a delete fails with
+  "Operation not permitted"; approve it once and git + cleanup work for the rest of the
+  session. There is NO separate "git permission" beyond this.
+- **No** API keys, tokens, logins, or service config of any kind.
+- **Network:** the `tools/*.mjs` scripts reach `openlibrary.org`, `en.wikipedia.org`,
+  `marxists.org`, and `theanarchistlibrary.org` over the sandbox's allowlisted network. No
+  action needed; if a host is ever unreachable, that is a transient sandbox issue, not a
+  permission.
+- **Runtime:** Node 18+ (built-in `fetch`) is preinstalled in the sandbox. `jsdom` and
+  `cairosvg` (used only for the optional headless verification harness) are installed
+  on demand in the scratch dir, not committed.
+
 ---
 
 ## Two kinds of work (read this before editing)
