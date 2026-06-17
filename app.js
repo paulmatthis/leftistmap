@@ -551,12 +551,13 @@
           left.reverse().forEach(function (n, i) { n.x = c.x - sp * (i + 1); });
           right.forEach(function (n, i) { n.x = (e ? e.x : c.x) + sp * (i + 1); });
         } else {
+          // Order by lineage barycentre so related cards sit together, then space
+          // the row EVENLY, centred on where its members want to be. Spacing only
+          // enforcing a minimum left holes when one card was pulled far from its
+          // neighbours; uniform spacing removes those gaps while keeping the order.
           bl.sort(function (a, b) { return (des[a.id] - des[b.id]) || (yrank[a.id] - yrank[b.id]); });
-          bl.forEach(function (n) { n.x = des[n.id]; });
-          for (var i = 1; i < bl.length; i++) if (bl[i].x < bl[i - 1].x + sp) bl[i].x = bl[i - 1].x + sp;
-          for (var j = bl.length - 2; j >= 0; j--) if (bl[j].x > bl[j + 1].x - sp) bl[j].x = bl[j + 1].x - sp;
-          var mid = (bl[0].x + bl[bl.length - 1].x) / 2;
-          bl.forEach(function (n) { n.x -= mid; });
+          var mean = 0; bl.forEach(function (n) { mean += des[n.id]; }); mean /= bl.length;
+          bl.forEach(function (n, i) { n.x = mean + (i - (bl.length - 1) / 2) * sp; });
         }
         // Keep every card inside the rails.
         var mx = -Infinity, mn = Infinity;
