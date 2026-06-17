@@ -241,6 +241,44 @@ reintroduce physics or barycenter placement without an explicit ask.
 
 ---
 
+## Book links (Bookshop) — how it works, the process, and a known limitation
+
+**How a buy button is built.** Each book in `data.js` is `{ title, isbn }`. The modal
+(`renderLinks` in `app.js`) builds `https://bookshop.org/a/104178/<isbn>` and renders a
+button ONLY when the book has an `isbn`. No isbn = no button (graceful).
+
+**How the ISBNs get there (the process used, repeat it for new books).**
+1. `tools/fetch-books.mjs` looks each `title` up on the free Open Library search API and
+   writes the resulting ISBN back into `data.js`. It is resilient: it writes after every
+   hit and stops before the 45s sandbox cap, so you RE-RUN it until a pass reports no new
+   resolutions (each pass skips books that already have an isbn). Running it as a chained
+   loop in one bash call will hit the timeout and the processes collide; run one pass per
+   bash call.
+2. It tries several queries in order (title+author, title, subtitle-stripped, general) and
+   REQUIRES the matched doc's `author_name` to contain the entry author's surname. This
+   author guard exists because the looser queries otherwise grab similar-titled
+   commentaries and study guides (this actually happened: Beauvoir got "Nature of the
+   Second Sex", Graeber got a Debt study guide, Davis got an unrelated anthology). If you
+   ever loosen the queries, keep the author guard.
+3. After a bulk run, REVERSE-CHECK a sample: fetch `https://openlibrary.org/isbn/<isbn>.json`
+   and confirm the returned title matches. If you find mis-hits, blank all isbns
+   (`code.replace(/, isbn: "[^"]*"/g, "")`) and re-fetch with the guard, rather than trying
+   to surgically fix.
+4. Validate: all isbns well-formed (`/^(97[89]\d{10}|\d{9}[\dX])$/`), and no isbn appears on
+   two DIFFERENT books (a shared isbn is a mis-hit, EXCEPT the legitimately co-authored
+   `Dialectic of Enlightenment`, which Adorno and Horkheimer share on purpose).
+
+**Known limitation (address in the future).** Pinning a buy link to one Open Library ISBN
+is fragile on two fronts: (a) Open Library often has no ISBN for older/obscure works, so
+those books get no button at all (7 currently), and (b) even a valid ISBN is not
+necessarily stocked on Bookshop, so a button can 404. A better future approach: link to a
+Bookshop *search* by title+author (resilient, never 404s on a missing edition) or use a
+curated/verified ISBN list, instead of trusting whatever single edition Open Library
+returns. Until then, the script's reminder stands: spot-check links and swap unstocked
+ISBNs by hand.
+
+---
+
 ## Verifying behavior changes (headless harness)
 
 When changing `app.js`/`styles.css`/`index.html`, verify with jsdom in the sandbox before
@@ -292,6 +330,9 @@ committing (this caught real bugs this session):
 
 ## Deferred ideas / next steps
 
+- Rework book buy-links so they do not depend on one Open Library ISBN (which fails
+  often: missing editions, or valid-but-unstocked-on-Bookshop 404s). Prefer a Bookshop
+  title+author search link or a curated ISBN list. See "Book links" above.
 - A few entries could still gain academic `reading` links beyond Wikipedia.
 - Possible labor-organizing expansion (Alinsky, Mazzocchi peers) if the branch grows.
 - "Battle" mode (designed, not built): pick two+ thinkers; they rise and face off; the
